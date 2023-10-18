@@ -1,0 +1,33 @@
+// docs: https://pris.ly/d/prisma-schema
+// might need to add later in generator: previewFeatures = ["jsonProtocol"]
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  DOG_OWNER
+  DOG_SITTER
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  email    String    @unique
+  password String    @unique
+  role     UserRole
+  dogs     Dog[]    @relation("DogOwner")
+}
+
+model Dog {
+  id       Int     @id @default(autoincrement())
+  name     String
+  owner    User    @relation("DogOwner", fields: [ownerId], references: [id])
+  ownerId  Int
+}
