@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import AuthStatus from "./components/auth-status";
 import { Suspense } from "react";
+import { NavBar } from "./components/NavBar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,6 +35,7 @@ export default async function RootLayout({
         <Suspense fallback="Fetching 🐶...">
           <AuthStatus />
         </Suspense>
+        <NavBar />
         {children}
       </body>
     </html>
