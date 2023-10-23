@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   description,
   //metadataBase: new URL("happy-hound-care.vercel.app"),
   themeColor: "#FFF",
+  icons: {
+    icon: [{ rel: 'icon', type: 'image/png', sizes: '32x32', url: 'public/favicon.ico' },]
+  }
 };
 
 export default async function RootLayout({
