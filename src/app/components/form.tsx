@@ -9,6 +9,11 @@ import toast from "react-hot-toast";
 
 export default function Form({ type }: { type: "login" | "register" }) {
     const [loading, setLoading] = useState(false);
+    const [selectedRole, setSelectedRole] = useState(""); 
+    // Event handler to update the selected role
+    const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedRole(e.target.value);
+    };
     const router = useRouter();
 
     return (
@@ -38,8 +43,10 @@ export default function Form({ type }: { type: "login" | "register" }) {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
+                            username: e.currentTarget.username.value,
                             email: e.currentTarget.email.value,
                             password: e.currentTarget.password.value,
+                            role: selectedRole
                         }),
                     }).then(async (res) => {
                         setLoading(false);
@@ -57,6 +64,32 @@ export default function Form({ type }: { type: "login" | "register" }) {
             }}
             className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
         >
+            {/* STARTS USERNAME */}
+            <div>
+                {
+                    type === "register"
+                        ? <>
+                            <label
+                                htmlFor="username"
+                                className="block text-xs text-gray-600 uppercase"
+                            >
+                                Username
+                            </label>
+                            <input
+                                id="username"
+                                name="username"
+                                type="text"
+                                placeholder="MarioThePitbull"
+                                autoComplete="username"
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                            />
+                        </>
+                        : <></>
+                }
+            </div>
+            {/* END USERNAME */}
+            {/* START EMAIL ADDRESS */}
             <div>
                 <label
                     htmlFor="email"
@@ -74,6 +107,8 @@ export default function Form({ type }: { type: "login" | "register" }) {
                     className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 />
             </div>
+            {/* END EMAIL ADDRESS */}
+            {/* START PASSWORD */}
             <div>
                 <label
                     htmlFor="password"
@@ -89,11 +124,40 @@ export default function Form({ type }: { type: "login" | "register" }) {
                     className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 />
             </div>
+            {/* END PASSWORD */}
+            {/* START ROLE */}
+            <div>
+                {
+                    type === "register"
+                        ?
+                        <>
+                            <label
+                                htmlFor="role"
+                                className="block text-xs text-gray-600 uppercase"
+                            >
+                                Role
+                            </label>
+                            <select
+                                id="role"
+                                name="role"
+                                required
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                                value={selectedRole}
+                                onChange={handleRoleChange}
+                            >
+                                <option value="DOG_OWNER">DOG OWNER</option>
+                                <option value="DOG_SITTER">DOG SITTER</option>
+                            </select>
+                        </>
+                        : <></>
+                }
+            </div>
+            {/* END ROLE */}
             <button
                 disabled={loading}
                 className={`${loading
-                        ? "cursor-not-allowed border-gray-200 bg-gray-100"
-                        : "border-black bg-black text-white hover:bg-white hover:text-black"
+                    ? "cursor-not-allowed border-gray-200 bg-gray-100"
+                    : "border-black bg-black text-white hover:bg-white hover:text-black"
                     } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
             >
                 {loading ? (
