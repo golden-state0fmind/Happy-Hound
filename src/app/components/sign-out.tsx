@@ -5,7 +5,7 @@ export default function SignOut() {
 
     return (
         <button
-            className="text-stone-400 hover:text-stone-200 transition-all"
+            className="text-red-600 hover:text-stone-200 transition-all"
             onClick={() => signOut()}
         >
             Sign out 🦴
