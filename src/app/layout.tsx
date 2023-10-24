@@ -27,20 +27,20 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.variable}>
-        <Toaster />
-        <Suspense fallback="Fetching 🐶...">
-          <AuthStatus />
-        </Suspense>
-        <NavBar />
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <body className={inter.variable}>
+          <Toaster />
+          <Suspense fallback="Fetching 🐶...">
+            <AuthStatus />
+          </Suspense>
+          <NavBar />
+          {children}
+        </body>
+      </html>
   );
 }
