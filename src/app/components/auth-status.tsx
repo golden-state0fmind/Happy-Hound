@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 
 export default async function AuthStatus() {
@@ -12,10 +11,4 @@ export default async function AuthStatus() {
             )}
         </div>
     );
-}
-
-export function useIsUserSignedIn() {
-    const { data: session } = useSession();
-
-    return session !== null;
 }
