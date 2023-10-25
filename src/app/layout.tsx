@@ -3,7 +3,6 @@ import "../../styles/globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import AuthStatus from "./components/auth-status";
 import { Suspense } from "react";
 import { NavBar } from "./components/NavBar";
 
@@ -32,15 +31,14 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
   return (
-      <html lang="en">
-        <body className={inter.variable}>
-          <Toaster />
-          <Suspense fallback="Fetching 🐶...">
-            <AuthStatus />
-          </Suspense>
+    <html lang="en">
+      <body className={inter.variable}>
+        <Toaster />
+        <Suspense fallback="Fetching 🐶...">
+        </Suspense>
           <NavBar />
           {children}
-        </body>
-      </html>
+      </body>
+    </html>
   );
 }
