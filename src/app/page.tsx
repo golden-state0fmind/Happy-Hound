@@ -1,3 +1,5 @@
+"use client"
+import ReduxProvider from "./components/WithReduxProvider";
 import ServicesList from "./components/service-list";
 
 export default function Home() {
@@ -7,6 +9,7 @@ export default function Home() {
     backgroundPosition: 'center center',
   };
   return (
+    <ReduxProvider>
     <div className="flex h-screen bg-gray-50 text-black">
       <div style={backgroundImageStyle} className="w-screen h-screen flex flex-row">
         <div className="w-full md:w-1/2 min-w-[20rem] p-6 flex flex-col items-center justify-center">
@@ -18,5 +21,6 @@ export default function Home() {
         <div className="w-1/2"></div>
       </div>
     </div>
+    </ReduxProvider>
   );
 }
