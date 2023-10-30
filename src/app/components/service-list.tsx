@@ -1,47 +1,41 @@
 "use client"
-import { useState } from 'react';
+import { toggleService } from '../reducers/serviceReducer'
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from '../reducers';
 
-type ServicesState = {
-    dropInVisits: boolean;
-    dogWalking: boolean;
-    houseSitting: boolean;
-}
 
 const ServicesList = () => {
-    const [selectedServices, setSelectedServices] = useState<ServicesState>({
-        dropInVisits: false,
-        dogWalking: false,
-        houseSitting: false,
-    });
+    const dispatch = useDispatch();
+    const serviceState = useSelector((state: RootState) => state.service);
+    const { dropInVisits, dogWalking, houseSitting } = serviceState;
 
-    const handleServiceToggle = (service: keyof ServicesState) => {
-        setSelectedServices({
-            ...selectedServices,
-            [service]: !selectedServices[service],
-        });
+    const handleServiceToggle = (service: any) => {
+        dispatch(toggleService(service));
     };
 
     return (
-        <div className="text-base md:text-3xl lg:text-4xl font-semibold">
-            <p className="text-gray-600">Our Services:</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ServiceCard
-                    title="Drop-in Visits"
-                    checked={selectedServices.dropInVisits}
-                    onChange={() => handleServiceToggle('dropInVisits')}
-                />
-                <ServiceCard
-                    title="Dog Walking"
-                    checked={selectedServices.dogWalking}
-                    onChange={() => handleServiceToggle('dogWalking')}
-                />
-                <ServiceCard
-                    title="House Sitting"
-                    checked={selectedServices.houseSitting}
-                    onChange={() => handleServiceToggle('houseSitting')}
-                />
+        
+            <div className="text-base md:text-3xl lg:text-4xl font-semibold">
+                <p className="text-gray-600">Our Services:</p>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <ServiceCard
+                        title="Drop-in Visits"
+                        checked={dropInVisits}
+                        onChange={() => handleServiceToggle('dropInVisits')}
+                    />
+                    <ServiceCard
+                        title="Dog Walking"
+                        checked={dogWalking}
+                        onChange={() => handleServiceToggle('dogWalking')}
+                    />
+                    <ServiceCard
+                        title="House Sitting"
+                        checked={houseSitting}
+                        onChange={() => handleServiceToggle('houseSitting')}
+                    />
+                </div>
             </div>
-        </div>
+        
     );
 };
 
