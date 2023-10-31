@@ -36,8 +36,8 @@ export default async function RootLayout({
         <Toaster />
         <Suspense fallback="Fetching 🐶...">
         </Suspense>
-          <NavBar />
-          {children}
+        <NavBar />
+        {children}
       </body>
     </html>
   );
