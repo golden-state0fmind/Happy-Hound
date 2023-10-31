@@ -17,7 +17,7 @@ export default function MobileNav({ session }: SessionProps) {
 
     return (
         <div className="lg:hidden">
-            <button className="absolute transform -translate-y-1/2 right-5" onClick={toggleMobileNav} >
+            <button aria-label="toggle-nav" className="absolute transform -translate-y-1/2 right-5" onClick={toggleMobileNav} >
                 <div className="relative">
                     <div className={isMobileOpen ? `h-1 w-8 bg-gray-700 transform origin-center transition-transform ease-in-out duration-300 rotate-45 translate-y-2` : `h-1 w-8 bg-gray-700`}></div>
                     <div className={isMobileOpen ? `opacity-0` : `h-1 w-8 my-1 bg-gray-700`}></div>

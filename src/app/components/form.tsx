@@ -154,6 +154,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
             </div>
             {/* END ROLE */}
             <button
+                aria-label="sign-in"
                 disabled={loading}
                 className={`${loading
                     ? "cursor-not-allowed border-gray-200 bg-gray-100"
