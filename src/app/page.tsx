@@ -4,7 +4,7 @@ import ServicesList from "./components/service-list";
 
 export default function Home() {
   const backgroundImageStyle = {
-    backgroundImage: `url('https://res.cloudinary.com/antonio2020/image/upload/q_auto/v1698716202/happy_dog.jpg')`,
+    backgroundImage: `url('https://res.cloudinary.com/antonio2020/image/upload/q_auto:best/f_auto/v1698716202/happy_dog.jpg')`,
     backgroundSize: 'cover', 
     backgroundPosition: 'center center',
   };
