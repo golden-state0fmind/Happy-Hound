@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from "../../lib/prisma"; // Will need to query lib
 
-export const data = [
+const data = [
     {
         id: 1,
         name: 'Sitter 1',

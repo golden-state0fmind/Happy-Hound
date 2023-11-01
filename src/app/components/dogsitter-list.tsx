@@ -1,7 +1,6 @@
 "use client"
 import { RootState } from '../reducers';
 import { useDispatch, useSelector } from 'react-redux';
-import { data } from '../api/dogsitter/route';
 import { DataProps } from '../reducers/sitterReducer';
 import { selectDogSitter } from '../reducers/sitterReducer';
 
@@ -11,6 +10,27 @@ export const DogSitterList = () => {
     const serviceState = useSelector((state: RootState) => state.service);
     const { dropInVisits, dogWalking, houseSitting } = serviceState;
     const { selectedId } = dogsitterState;
+
+    const data = [
+        {
+            id: 1,
+            name: 'Sitter 1',
+            description: 'Experienced in dog walking and pet sitting.',
+            location: 'City A',
+            rating: 4.7,
+            services: ['Dog Walking', 'Pet Sitting'],
+            profileImage: 'sitter1.jpg',
+        },
+        {
+            id: 2,
+            name: 'Sitter 2',
+            description: 'Loves spending time with dogs and providing quality care.',
+            location: 'City B',
+            rating: 4.9,
+            services: ['Dog Walking', 'House Sitting'],
+            profileImage: 'sitter2.jpg',
+        },
+    ];
     
     const handleSelectDogSitter = (id: number) => {
         dispatch(selectDogSitter(id))
