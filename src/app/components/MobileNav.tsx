@@ -19,9 +19,9 @@ export default function MobileNav({ session }: SessionProps) {
         <div className="lg:hidden">
             <button aria-label="toggle-nav" className="absolute transform -translate-y-1/2 right-5" onClick={toggleMobileNav} >
                 <div className="relative">
-                    <div className={isMobileOpen ? `h-1 w-8 bg-gray-700 transform origin-center transition-transform ease-in-out duration-300 rotate-45 translate-y-2` : `h-1 w-8 bg-gray-700`}></div>
-                    <div className={isMobileOpen ? `opacity-0` : `h-1 w-8 my-1 bg-gray-700`}></div>
-                    <div className={isMobileOpen ? `h-1 w-8 bg-gray-700 transform origin-center transition-transform ease-in-out duration-300 -rotate-45 translate-y-1` : `h-1 w-8 bg-gray-700`}></div>
+                    <div className={isMobileOpen ? `h-1 w-8 bg-blue-800 transform origin-center transition-transform ease-in-out duration-300 rotate-45 translate-y-2` : `h-1 w-8 bg-blue-800`}></div>
+                    <div className={isMobileOpen ? `opacity-0` : `h-1 w-8 my-1 bg-blue-800`}></div>
+                    <div className={isMobileOpen ? `h-1 w-8 bg-blue-800 transform origin-center transition-transform ease-in-out duration-300 -rotate-45 translate-y-1` : `h-1 w-8 bg-blue-800`}></div>
                 </div>
             </button>
             <div className={isMobileOpen ? "relative block text-left mt-4" : "hidden"}>
@@ -35,14 +35,14 @@ export default function MobileNav({ session }: SessionProps) {
                                     <Link
                                         href="/register"
                                         prefetch={false}
-                                        className="underline hover:text-stone-400 transition-all block px-4 py-2"
+                                        className="underline hover:text-blue-600 transition-all block px-4 py-2"
                                     >
                                         Create Account
                                     </Link>
                                     <Link
                                         href="/login"
                                         prefetch={false}
-                                        className="underline hover:text-stone-400 transition-all block px-4 py-2"
+                                        className="underline hover:text-blue-600 transition-all block px-4 py-2"
                                     >
                                         Sign In
                                     </Link>
