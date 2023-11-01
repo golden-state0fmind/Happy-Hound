@@ -54,7 +54,7 @@ const ServicesList = () => {
 
     return (
         <div className="text-base md:text-3xl lg:text-4xl font-semibold">
-            <p className="text-gray-400">Our Services:</p>
+            <p className="text-blue-800">Our Services:</p>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <ServiceCard
                     title="Drop-in Visits"
@@ -72,7 +72,7 @@ const ServicesList = () => {
                     onChange={() => handleServiceToggle('houseSitting')}
                 />
                 <button
-                    aria-label="find dog sitter"
+                    aria-label="Find Dog Sitters"
                     disabled={loading}
                     className={`${baseButtonStyles} ${getButtonStyles()}`}
                     onClick={handleFindDogSitter}
@@ -119,7 +119,7 @@ const ServiceCard = ({ title, checked, onChange }: ServiceCardProps) => {
                     </svg>
                 )}
             </div>
-            <h2 className={`text-base md:text-lg lg:text-xl font-semibold ${checked ? 'text-green-600' : ''}`}>{title}</h2>
+            <h2 className={`text-base md:text-lg lg:text-xl font-semibold ${checked ? 'text-green-800' : ''}`}>{title}</h2>
         </div>
     );
 };
