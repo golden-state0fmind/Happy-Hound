@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from "../../lib/prisma"; // Will need to query lib
 
 export const data = [
@@ -22,17 +23,15 @@ export const data = [
     },
 ];
 
-
 export async function GET(req: Request) {
-
+    
     const delayedResponse = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(NextResponse.json({ data, status: 200 }));
-        }, 1000); // Delay set to 2000 milliseconds (2 seconds)
+            resolve(data);
+        }, 1000);
     });
-    // Await the delayed response and send it when resolved
+    
     const result = await delayedResponse;
-    // return NextResponse.json({data: data, status: 200})
-
-    return result;
-};
+    
+    return NextResponse.json({ data: result, status: 200 });
+}
