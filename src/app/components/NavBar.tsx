@@ -7,12 +7,12 @@ export const NavBar = async () => {
     const session = await getServerSession();
 
     return (
-        <div className="flex justify-between items-center p-6">
+        <div className="flex justify-between items-center p-6 bg-gray-100">
             <Link
                 href="/"
                 prefetch={false}
             >
-                <h1 className="font-bold text-2xl">
+                <h1 className="font-bold text-2xl text-blue-800">
                     Happy Hound Care 🐶
                 </h1>
             </Link>
@@ -32,14 +32,14 @@ export const NavBar = async () => {
                         <Link
                             href="/register"
                             prefetch={false}
-                            className="underline hover:text-stone-400 transition-all pe-5"
+                            className="underline hover:text-blue-600 transition-all pe-5"
                         >
                             Create Account
                         </Link>
                         <Link
                             href="/login"
                             prefetch={false}
-                            className="underline hover:text-stone-400 transition-all"
+                            className="underline hover:text-blue-600 transition-all"
                         >
                             Sign In
                         </Link>
