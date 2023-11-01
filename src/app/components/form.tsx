@@ -157,12 +157,12 @@ export default function Form({ type }: { type: "login" | "register" }) {
                 aria-label="sign-in"
                 disabled={loading}
                 className={`${loading
-                    ? "cursor-not-allowed border-gray-200 bg-gray-100"
-                    : "border-black bg-black text-white hover:bg-white hover:text-black"
+                    ? "cursor-not-allowed border-blue-200 bg-blue-600"
+                    : "border-blue-200 bg-blue-300 text-black hover:bg-blue-800 hover:text-white"
                     } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
             >
                 {loading ? (
-                    <LoadingDots color="#808080" />
+                    <LoadingDots color="#FFFFFF" />
                 ) : (
                     <p>{type === "login" ? "Sign In" : "Sign Up"}</p>
                 )}
@@ -170,7 +170,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
             {type === "login" ? (
                 <p className="text-center text-sm text-gray-600">
                     Don&apos;t have an account?{" "}
-                    <Link href="/register" className="font-semibold text-gray-800">
+                    <Link href="/register" className="font-semibold text-blue-800">
                         Sign up
                     </Link>{" "}
                     for free.
@@ -178,7 +178,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
             ) : (
                 <p className="text-center text-sm text-gray-600">
                     Already have an account?{" "}
-                    <Link href="/login" className="font-semibold text-gray-800">
+                    <Link href="/login" className="font-semibold text-blue-800">
                         Sign in
                     </Link>{" "}
                     instead.
