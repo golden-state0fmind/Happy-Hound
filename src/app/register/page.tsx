@@ -9,7 +9,7 @@ export default function Login() {
                     <Link className='text-2xl' href="/">
                         🏠
                     </Link>
-                    <h3 className="text-xl font-semibold">Sign Up</h3>
+                    <h3 className="text-xl font-semibold text-blue-800">Sign Up</h3>
                     <p className="text-sm text-gray-500">
                         Create an account with your email and password
                     </p>
