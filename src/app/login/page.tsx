@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Form from "../components/form";
 import Link from "next/link";
 
@@ -10,7 +9,7 @@ export default function Login() {
                     <Link className='text-2xl' href="/">
                         🏠
                     </Link>
-                    <h3 className="text-xl font-semibold">Sign In</h3>
+                    <h3 className="text-xl font-semibold text-blue-800">Sign In</h3>
                     <p className="text-sm text-gray-500">
                         Use your email and password to sign in
                     </p>
