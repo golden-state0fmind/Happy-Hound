@@ -10,10 +10,10 @@ export default function Home() {
   };
   return (
     <ReduxProvider>
-      <div className="flex h-screen bg-gray-50 text-black">
+      <div className="flex h-screen bg-gray-100 text-blue-800">
         <div style={backgroundImageStyle} className="w-screen h-screen flex flex-row">
           <div className="w-full md:w-1/2 min-w-[20rem] p-6 flex flex-col items-center justify-center">
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-gray-100 p-6 rounded-lg shadow-md">
               <h1 className="text-base md:text-3xl lg:text-4xl font-semibold">Embrace pet care right in your local community. Reserve reliable pet sitters and dog walkers.</h1>
               <ServicesList />
             </div>
