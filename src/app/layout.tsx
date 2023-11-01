@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   description,
   //metadataBase: new URL("happy-hound-care.vercel.app"),
   themeColor: "#FFF",
+  referrer: 'origin-when-cross-origin',
   icons: {
     icon: [{ rel: 'icon', type: 'image/png', sizes: '32x32', url: 'public/favicon.ico' },]
   }
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -38,6 +39,7 @@ export default async function RootLayout({
         </Suspense>
         <NavBar />
         {children}
+        {/* <script nonce="random123" src="https://trusted.example.com/trusted_script.js"></script> */}
       </body>
     </html>
   );
