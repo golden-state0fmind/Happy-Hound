@@ -5,7 +5,7 @@ import Link from 'next/link';
 import LoadingDots from './loading-dots';
 
 const FindSitterForm = () => {
-    const [zipCode, setZipCode] = useState('');
+    const [zipCode, setZipCode] = useState<number | string>('');
     const [loading, setLoading] = useState(false);
     const [numberOfDogs, setNumberOfDogs] = useState<number | string>(1);
     const serviceState = useSelector((state: RootState) => state.service);
@@ -31,9 +31,10 @@ const FindSitterForm = () => {
         }
     };
 
-    const isValidZipCode = (value: string) => {
+    const isValidZipCode = (value: number | string) => {
         const zipCodePattern = /^\d{5}(-\d{4})?$/;
-        const isValid = zipCodePattern.test(value);
+        const convertValue = value.toString();
+        const isValid = zipCodePattern.test(convertValue);
         if (!isValid) {
             setLoading(false);
             alert('Please enter a valid ZIP code');
@@ -123,6 +124,8 @@ const FindSitterForm = () => {
                     id="location"
                     name="location"
                     type="text"
+                    pattern="\d*"
+                    inputMode="numeric"
                     required
                     value={zipCode}
                     maxLength={5}
