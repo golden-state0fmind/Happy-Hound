@@ -95,7 +95,7 @@ const FindSitterForm = () => {
                     maxLength={2}
                     value={numberOfDogs}
                     onChange={handleDogNumber}
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-700 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 />
             </div>
             <div>
@@ -111,7 +111,7 @@ const FindSitterForm = () => {
                     readOnly
                     disabled
                     value={servicesText}
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-700 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-950 sm:text-green-800 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 />
             </div>
 
@@ -127,7 +127,7 @@ const FindSitterForm = () => {
                     value={zipCode}
                     maxLength={5}
                     onChange={handleZipCodeInput}
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-700 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                 />
             </div>
 
@@ -144,7 +144,7 @@ const FindSitterForm = () => {
                         type="date"
                         required
                         defaultValue={formattedDate}
-                        className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                        className="appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                     />
                     <input
                         aria-label="endDate"
@@ -153,13 +153,13 @@ const FindSitterForm = () => {
                         type="date"
                         required
                         defaultValue={formattedDate}
-                        className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+                        className="appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                     />
                 </div>
             </div>
 
             <button
-                aria-label="Submit"
+                aria-label="Fetch Dog Sitters"
                 disabled={loading}
                 className={`${loading
                     ? "cursor-not-allowed border-blue-200 bg-blue-600"
@@ -169,7 +169,7 @@ const FindSitterForm = () => {
                 {loading ? (
                     <LoadingDots color="#FFFFFF" />
                 ) : (
-                    <p>Submit</p>
+                    <p>Fetch Dog Sitters</p>
                 )}
             </button>
         </form>
