@@ -77,7 +77,7 @@ const DogSitterCard = ({
             className={`border cursor-pointer flex flex-col bg-gray-100 rounded-lg shadow-md space-y-4 px-4 py-8 sm:px-16 ${checked ? 'border-green-600' : 'border-gray-400'}`}
             onClick={handleSelectDogSitter}
         >
-            <div className={`w-6 h-6 mr-2 border-2 ${checked ? 'border-green-700' : 'border-blue-800'} rounded-full flex items-center justify-center`}>
+            <div className={`w-6 h-6 mr-2 border-2 ${checked ? 'border-green-600' : 'border-blue-800'} rounded-full flex items-center justify-center`}>
                 {checked && (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
