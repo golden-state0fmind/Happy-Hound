@@ -7,8 +7,6 @@ import { selectDogSitter } from '../reducers/sitterReducer';
 export const DogSitterList = () => {
     const dispatch = useDispatch();
     const dogsitterState = useSelector((state: RootState) => state.dogsitter);
-    const serviceState = useSelector((state: RootState) => state.service);
-    const { dropInVisits, dogWalking, houseSitting } = serviceState;
     const { selectedId } = dogsitterState;
 
     const data = [
@@ -38,34 +36,22 @@ export const DogSitterList = () => {
 
     return (
         <div className="text-base md:text-3xl lg:text-4xl font-semibold">
-            <p className="text-blue-800">
-                Your Selected Services:
-            </p>
-                <ul className="list-none text-green-800">
-                    <li>
-                        {dropInVisits ? 'Drop-in Visits' : ''}
-                    </li>
-                    <li>
-                        {dogWalking ? 'Dog Walking' : ''}
-                    </li>
-                    <li>
-                        {houseSitting ? 'House Sitting' : ''}
-                    </li>
-                </ul>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4">
                 {data.map((sitter, index) => (
-                    <DogSitterCard
-                        key={index}
-                        selectedId={0}
-                        name={sitter.name}
-                        description={sitter.description}
-                        location={sitter.location}
-                        rating={sitter.rating}
-                        services={sitter.services}
-                        profileImage={sitter.profileImage}
-                        checked={selectedId === sitter.id}
-                        handleSelectDogSitter={() => handleSelectDogSitter(sitter.id)}
-                    />
+                    <div className='bg-gray-100 p-6 rounded-lg shadow-md'>
+                        <DogSitterCard
+                            key={index}
+                            selectedId={0}
+                            name={sitter.name}
+                            description={sitter.description}
+                            location={sitter.location}
+                            rating={sitter.rating}
+                            services={sitter.services}
+                            profileImage={sitter.profileImage}
+                            checked={selectedId === sitter.id}
+                            handleSelectDogSitter={() => handleSelectDogSitter(sitter.id)}
+                        />
+                    </div>
                 ))}
             </div>
         </div>
@@ -78,10 +64,18 @@ export type SitterCardProps = DataProps & {
     handleSelectDogSitter: () => void
 }
 
-const DogSitterCard = ({ name, checked, handleSelectDogSitter }: SitterCardProps) => {
+const DogSitterCard = ({
+    name,
+    description,
+    location,
+    rating,
+    services,
+    profileImage,
+    checked,
+    handleSelectDogSitter }: SitterCardProps) => {
     return (
         <div
-            className={`border p-4 rounded-lg cursor-pointer flex items-center ${checked ? 'border-green-600' : 'border-gray-400'}`}
+            className={`border cursor-pointer flex flex-col bg-gray-100 rounded-lg shadow-md space-y-4 px-4 py-8 sm:px-16 ${checked ? 'border-green-600' : 'border-gray-400'}`}
             onClick={handleSelectDogSitter}
         >
             <div className={`w-6 h-6 mr-2 border-2 ${checked ? 'border-green-700' : 'border-blue-800'} rounded-full flex items-center justify-center`}>
@@ -103,6 +97,11 @@ const DogSitterCard = ({ name, checked, handleSelectDogSitter }: SitterCardProps
                 )}
             </div>
             <h2 className={`text-base md:text-lg lg:text-xl font-semibold ${checked ? 'text-green-800' : 'text-blue-800'}`}>{name}</h2>
+            <p className="text-sm text-gray-600">{description}</p>
+            <p className="text-xs text-gray-500">{location}</p>
+            <p className="text-xs text-gray-500">Rating: {rating}</p>
+            <p className="text-xs text-gray-500">Services: {services.join(', ')}</p>
+            {/* Include profileImage rendering logic */}
         </div>
     );
 };
