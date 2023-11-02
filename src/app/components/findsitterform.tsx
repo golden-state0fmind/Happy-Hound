@@ -34,8 +34,8 @@ const FindSitterForm = () => {
             <div>
                 <label htmlFor="pets" className="block text-xs text-gray-600 uppercase">
                     How many dogs?
-                    <span className="ps-2 text-red-600">*</span>
-                    <span className="text-xs text-red-600">Max 10 dogs per sitter</span>
+                    <span className="ps-2 text-red-700">*</span>
+                    <span className="text-xs text-red-700">Max 10 dogs per sitter</span>
                 </label>
                 <input
                     id="pets"
@@ -85,6 +85,7 @@ const FindSitterForm = () => {
                 </label>
                 <div className="mt-1 grid grid-cols-2 gap-2">
                     <input
+                        aria-label="startDate"
                         id="startDate"
                         name="startDate"
                         type="date"
@@ -92,6 +93,7 @@ const FindSitterForm = () => {
                         className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                     />
                     <input
+                        aria-label="endDate"
                         id="endDate"
                         name="endDate"
                         type="date"
