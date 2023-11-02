@@ -96,10 +96,10 @@ const DogSitterCard = ({
                 )}
             </div>
             <h2 className={`text-base md:text-lg lg:text-xl font-semibold ${checked ? 'text-green-800' : 'text-blue-800'}`}>{name}</h2>
-            <p className="text-sm text-gray-600">{description}</p>
-            <p className="text-xs text-gray-500">{location}</p>
-            <p className="text-xs text-gray-500">Rating: {rating}</p>
-            <p className="text-xs text-gray-500">Services: {services.join(', ')}</p>
+            <p className="text-sm text-blue-800">{description}</p>
+            <p className="text-xs text-blue-700">{location}</p>
+            <p className="text-xs text-blue-700">Rating: {rating}</p>
+            <p className="text-xs text-blue-700">Services: {services.join(', ')}</p>
             {/* Include profileImage rendering logic */}
         </div>
     );
