@@ -38,9 +38,8 @@ export const DogSitterList = () => {
         <div className="text-base md:text-3xl lg:text-4xl font-semibold">
             <div className="grid grid-cols-1 gap-4">
                 {data.map((sitter, index) => (
-                    <div className='bg-gray-100 p-6 rounded-lg shadow-md'>
+                    <div key={index} className='bg-gray-100 p-6 rounded-lg shadow-md'>
                         <DogSitterCard
-                            key={index}
                             selectedId={0}
                             name={sitter.name}
                             description={sitter.description}
