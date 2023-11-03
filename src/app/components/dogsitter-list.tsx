@@ -5,53 +5,103 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DataProps } from '../reducers/sitterReducer';
 import { selectDogSitter } from '../reducers/sitterReducer';
 
+export type SitterCardProps = DataProps & {
+    name: string;
+    index: number;
+    checked: boolean;
+    randomNum: number;
+    handleSelectDogSitter: () => void
+}
+
 export const DogSitterList = () => {
     const dispatch = useDispatch();
     const [randomNum, setRandomNum] = useState(2)
+    const [sortedSitters, setSortedSitters] = useState <SitterCardProps[]>([]);
+    const serviceState = useSelector((state: RootState) => state.service);
     const dogsitterState = useSelector((state: RootState) => state.dogsitter);
     const { selectedId } = dogsitterState;
 
+    // checked, randomNum, index, and handleSelectDogSitter
     const data = [
         {
+            index: 0,
             id: 1,
+            selectedId: 1,
             name: 'Mike M.',
-            description: 'Experienced in dog walking and pet sitting.',
             city: 'Glendale',
             state: 'AZ',
-            zipCode: 85306,
             rating: 4.9,
+            zipCode: 85306,
+            services: ['Drop-In Visits', 'Pet Sitting'],
+            randomNum: 0,
             chargeRate: 35,
-            services: ['Dog Walking', 'Pet Sitting'],
+            description: 'Experienced in dog walking and pet sitting.',
             profileImage: 'sitter1.jpg',
+            checked: false,
+            handleSelectDogSitter: function(){},
         },
         {
+            index: 0,
             id: 2,
+            selectedId: 2,
             name: 'Jerry R.',
-            description: 'Loves spending time with dogs and providing quality care.',
             city: 'Glendale',
             state: 'AZ',
-            zipCode: 85306,
             rating: 4.7,
-            chargeRate: 27,
             services: ['Dog Walking', 'House Sitting'],
+            zipCode: 85306,
+            randomNum: 0,
+            chargeRate: 27,
+            description: 'Loves spending time with dogs and providing quality care.',
             profileImage: 'sitter2.jpg',
+            checked: false,
+            handleSelectDogSitter: function(){ },
         },
         {
+            index: 0,
             id: 3,
+            selectedId: 3,
             name: 'Sara S.',
-            description: 'Loves dogs.',
             city: 'Glendale',
             state: 'AZ',
-            zipCode: 85306,
             rating: 4.8,
-            chargeRate: 30,
+            zipCode: 85306,
             services: ['Dog Walking', 'House Sitting'],
+            randomNum: 0,
+            chargeRate: 30,
+            description: 'Loves dogs.',
             profileImage: 'sitter2.jpg',
+            checked: false,
+            handleSelectDogSitter: function(){ },
         },
     ];
 
-    // Sorting the data array based on 'rating' in descending order
-    data.sort((a, b) => b.rating - a.rating);
+    useEffect(() => {
+        const { dropInVisits, dogWalking, houseSitting } = serviceState;
+
+        const selectedServices: string[] = [];
+
+        if (dogWalking) {
+            selectedServices.push('Dog Walking');
+        }
+        if (dropInVisits) {
+            selectedServices.push('Drop-In Visits');
+        }
+        if (houseSitting) {
+            selectedServices.push('House Sitting');
+        }
+
+        if (selectedServices.length > 0) {
+            const sittersOfferingServices = data.filter(sitter => {
+                return selectedServices.some(service => sitter.services.includes(service));
+            });
+
+            if (sittersOfferingServices.length > 0) {
+                const sortedSitters = sittersOfferingServices.sort((a, b) => b.rating - a.rating);
+                setSortedSitters(sortedSitters);
+            }
+        }
+    }, [serviceState]);
     
     const generateRandomNumberInRange = (min: number, max: number) => {
         const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -64,26 +114,26 @@ export const DogSitterList = () => {
         dispatch(selectDogSitter(id));
     };
 
-
     return (
         <div className="text-base md:text-3xl lg:text-4xl font-semibold">
             <div className="grid grid-cols-1 gap-4">
-                {data.map((sitter, index) => (
+                {sortedSitters.map((sitter, index) => (
                     <div key={index} className='bg-gray-100 p-6 rounded-lg shadow-md'>
                         <DogSitterCard
-                            selectedId={0}
                             index={index}
+                            id={sitter.id}
+                            selectedId={0}
                             name={sitter.name}
-                            description={sitter.description}
                             city={sitter.city}
                             state={sitter.state}
-                            zipCode={sitter.zipCode}
                             rating={sitter.rating}
-                            chargeRate={sitter.chargeRate}
+                            zipCode={sitter.zipCode}
                             services={sitter.services}
+                            randomNum={randomNum + index}
+                            chargeRate={sitter.chargeRate}
+                            description={sitter.description}
                             profileImage={sitter.profileImage}
                             checked={selectedId === sitter.id}
-                            randomNum={randomNum + index}
                             handleSelectDogSitter={() => handleSelectDogSitter(sitter.id)}
                         />
                     </div>
@@ -93,13 +143,6 @@ export const DogSitterList = () => {
     );
 };
 
-export type SitterCardProps = DataProps & {
-    name: string;
-    checked: boolean;
-    randomNum: number;
-    index: number;
-    handleSelectDogSitter: () => void
-}
 // TODO: Have user either upload or take profile picture 
 const DogSitterCard = ({
     name,
