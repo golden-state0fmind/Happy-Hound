@@ -33,7 +33,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
                             toast.error(error);
                         } else {
                             router.refresh();
-                            router.push("/protected");
+                            router.push("/profile");
                         }
                     });
                 } else {
