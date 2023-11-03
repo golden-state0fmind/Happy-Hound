@@ -22,13 +22,6 @@ export const NavBar = async () => {
                     <SignOut />
                     :
                     <>
-                        {/* <Link
-                            href="/protected"
-                            prefetch={false}
-                            className="underline hover:text-stone-400 transition-all"
-                        >
-                            Protected Routes
-                        </Link> */}
                         <Link
                             href="/register"
                             prefetch={false}
