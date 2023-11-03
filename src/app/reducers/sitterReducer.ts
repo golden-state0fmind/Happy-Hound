@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type DataProps = {
+    id: number
     selectedId: number,
     name: string,
     description: string,
@@ -14,6 +15,7 @@ export type DataProps = {
 }
 
 const initialState: DataProps = {
+    id: 0,
     selectedId: 0,
     name: '',
     description: '',
