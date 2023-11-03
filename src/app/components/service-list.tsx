@@ -103,20 +103,7 @@ const ServiceCard = ({ title, checked, onChange }: ServiceCardProps) => {
         >
             <div className={`w-6 h-6 mr-2 border-2 ${checked ? 'border-green-600' : 'border-blue-800'} rounded-full flex items-center justify-center`}>
                 {checked && (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="green"
-                        className="checkmark"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                        />
-                    </svg>
+                    <div className='text-base md:text-lg lg:text-xl text-green-600' > &#x2713; </div>
                 )}
             </div>
             <h2 className={`text-base md:text-lg lg:text-xl font-semibold ${checked ? 'text-green-800' : ''}`}>{title}</h2>
