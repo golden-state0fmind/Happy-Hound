@@ -16,10 +16,10 @@ export type SitterCardProps = DataProps & {
 export const DogSitterList = () => {
     const dispatch = useDispatch();
     const [randomNum, setRandomNum] = useState(2)
-    const [sortedSitters, setSortedSitters] = useState <SitterCardProps[]>([]);
     const serviceState = useSelector((state: RootState) => state.service);
     const dogsitterState = useSelector((state: RootState) => state.dogsitter);
     const { selectedId } = dogsitterState;
+    const [sortedSitters, setSortedSitters] = useState <SitterCardProps[]>([]);
 
     // checked, randomNum, index, and handleSelectDogSitter
     const data = [
