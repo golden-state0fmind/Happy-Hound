@@ -19,7 +19,16 @@ export const NavBar = async () => {
             <div className="hidden lg:block">
                 {session
                     ?
-                    <SignOut />
+                    <>
+                        <Link
+                            href="/profile"
+                            prefetch={false}
+                            className="underline hover:text-blue-600 transition-all pe-5"
+                        >
+                            Profile
+                        </Link>
+                        <SignOut />
+                    </>
                     :
                     <>
                         <Link
