@@ -36,7 +36,9 @@ export default function MobileNav({ session }: SessionProps) {
                                         prefetch={false}
                                         className="underline hover:text-blue-600 transition-all block px-4 py-2"
                                     >
-                                        Profile
+                                        <div className="h-8 w-8 flex items-center justify-center bg-gray-100 rounded-full">
+                                            <span className="text-white text-xs md:text-sm lg:text-base font-bold">👤</span>
+                                        </div>
                                     </Link>
                                     <div className='block px-4 py-2'>
                                         <SignOut />

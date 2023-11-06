@@ -19,16 +19,18 @@ export const NavBar = async () => {
             <div className="hidden lg:block">
                 {session
                     ?
-                    <>
-                        <Link
-                            href="/profile"
-                            prefetch={false}
-                            className="underline hover:text-blue-600 transition-all pe-5"
-                        >
-                            Profile
-                        </Link>
+                    <div className='flex justify-between w-40'>
+                        <div className="h-10 w-10 flex items-center justify-center bg-white rounded-full">
+                            <Link
+                                href="/profile"
+                                prefetch={false}
+                                className="text-white text-xs md:text-sm lg:text-base font-bold"
+                            >
+                                👤
+                            </Link>
+                        </div>
                         <SignOut />
-                    </>
+                    </div>
                     :
                     <>
                         <Link
