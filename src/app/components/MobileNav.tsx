@@ -29,7 +29,19 @@ export default function MobileNav({ session }: SessionProps) {
                     <div className="block px-4 py-2">
                         {
                             session
-                                ? <SignOut />
+                                ?
+                                <>
+                                    <Link
+                                        href="/profile"
+                                        prefetch={false}
+                                        className="underline hover:text-blue-600 transition-all block px-4 py-2"
+                                    >
+                                        Profile
+                                    </Link>
+                                    <div className='block px-4 py-2'>
+                                        <SignOut />
+                                    </div>
+                                </>
                                 :
                                 <>
                                     <Link
