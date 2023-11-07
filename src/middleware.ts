@@ -23,23 +23,17 @@ export default async function middleware(req: NextRequest) {
     requestHeaders.set('x-nonce', nonce);
     requestHeaders.set('Content-Security-Policy', cspHeader);
 
-    const whitelistedRoutes = ['/', '/dogsitter', '/login', '/register'];
-    if (whitelistedRoutes.includes(path)) {
+    const whitelistedPublicRoutes = ['/', '/dogsitter', '/login', '/register'];
+    if (whitelistedPublicRoutes.includes(path)) {
         return NextResponse.next();
     }
 
     const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-    if (!session && path === '/profile') {
+    const whitelistedPrivateRoutes = ['/profile', '/addpet'];
+    if (!session && whitelistedPrivateRoutes.includes(path)) {
         return NextResponse.redirect(new URL('/login', req.url));
-    } else if (session && (path === '/login' || path === '/register')) {
-        return NextResponse.redirect(new URL('/profile', req.url));
-    }
-
-    if (!session && path === '/addpet') {
-        return NextResponse.redirect(new URL('/login', req.url));
-    } else if (session && (path === '/login' || path === '/register')) {
-        return NextResponse.redirect(new URL(`${path}`, req.url));
+    } else if (session && whitelistedPrivateRoutes.includes(path)) {
+        return NextResponse.next();
     }
 
     return NextResponse.next({
