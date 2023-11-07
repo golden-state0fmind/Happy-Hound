@@ -36,6 +36,12 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/profile', req.url));
     }
 
+    if (!session && path === '/addpet') {
+        return NextResponse.redirect(new URL('/login', req.url));
+    } else if (session && (path === '/login' || path === '/register')) {
+        return NextResponse.redirect(new URL(`${path}`, req.url));
+    }
+
     return NextResponse.next({
         headers: requestHeaders,
         request: { headers: requestHeaders },
