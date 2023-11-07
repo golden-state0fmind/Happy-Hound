@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import LoadingDots from './loading-dots';
 
 const PetForm = () => {
-    const [aloneTime, setAloneTime] = useState('');
-    const [energyLevel, setEnergyLevel] = useState('');
+    const [aloneTime, setAloneTime] = useState<number>(4);
+    const [energyLevel, setEnergyLevel] = useState<number>(2);
     const [isMale, setIsMale] = useState<boolean>(false);
     const [isSpayed, setIsSpayed] = useState<boolean>(false);
     const [isHouseTrained, setIsHouseTrained] = useState<boolean>(false);
@@ -14,10 +14,13 @@ const PetForm = () => {
     const [isMicrochipped, setIsMicrochipped] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [customAloneTime, setCustomAloneTime] = useState('');
-    const [feedingSchedule, setFeedingSchedule] = useState('');
+    const [feedingSchedule, setFeedingSchedule] = useState<number>(1);
     const [pottyBreakCustom, setPottyBreakCustom] = useState('');
-    const [pottyBreakSchedule, setPottyBreakSchedule] = useState('');
+    const [pottyBreakSchedule, setPottyBreakSchedule] = useState<number>(2);
     const [customFeedingSchedule, setCustomFeedingSchedule] = useState('');
+    const [isMedPill, setIsMedPill] = useState<boolean>(false);
+    const [isMedTopical, setIsMedTopical] = useState<boolean>(false);
+    const [isMedInjection, setIsMedInjection] = useState<boolean>(false);
     const [vetInfo, setVetInfo] = useState({
         vetName: '',
         vetAddress: '',
@@ -116,10 +119,10 @@ const PetForm = () => {
         setVetInfo({ ...vetInfo, [id]: value });
     };
 
-    const handlePottyBreakScheduleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
+    const handlePottyBreakScheduleChange = (value: number) => {
+        
         setPottyBreakSchedule(value);
-        if (value === 'custom') {
+        if (value === 0) {
             // Show the textarea
             setPottyBreakCustom('');
         }
@@ -129,15 +132,13 @@ const PetForm = () => {
         setPottyBreakCustom(event.target.value);
     };
 
-    const handleEnergyLevelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
+    const handleEnergyLevelChange = (value: number) => {
         setEnergyLevel(value);
     };
 
-    const handleAloneTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
+    const handleAloneTimeChange = (value: number) => {
         setAloneTime(value);
-        if (value === 'customAlone') {
+        if (value === 0) {
             // Show the textarea
             setCustomAloneTime('');
         }
@@ -147,10 +148,9 @@ const PetForm = () => {
         setCustomAloneTime(event.target.value);
     };
 
-    const handleFeedingScheduleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
+    const handleFeedingScheduleChange = (value: number) => {
         setFeedingSchedule(value);
-        if (value === 'customFeeding') {
+        if (value === 0) {
             // Show the textarea
             setCustomFeedingSchedule('');
         }
@@ -177,10 +177,7 @@ const PetForm = () => {
                 {/* Pet Details */}
                 <h2 className="text-xl text-blue-800 font-bold">Pet details</h2>
                 <div className="space-y-4">
-                    {/* Description */}
-                    <div>
-                        <label htmlFor="description" className="block text-xs text-gray-600 uppercase">Provide a description of your pet</label>
-                    </div>
+                    <div className="block text-xs text-gray-600 uppercase">Provide a description of your pet</div>
 
                     {/* Name */}
                     <div>
@@ -210,7 +207,7 @@ const PetForm = () => {
                     <div className="flex space-x-4">
                         {/* Male Radio Button */}
                         <ConditionalRadioButton
-                            inputType={'text'} 
+                            inputType={'text'}
                             labelName={'male'}
                             labelText={'Male'}
                             condition={isMale}
@@ -219,7 +216,7 @@ const PetForm = () => {
                         />
                         {/* Female Radio Button */}
                         <ConditionalRadioButton
-                            inputType={'text'} 
+                            inputType={'text'}
                             labelName={'female'}
                             labelText={'Female'}
                             condition={isMale}
@@ -377,7 +374,7 @@ const PetForm = () => {
                     {/* Adoption date */}
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Adoption date</label>
-                        <input defaultValue={formattedDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                        <input defaultValue={formattedDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm sm:text-sm" />
                     </div>
 
                     {/* About your pet */}
@@ -389,155 +386,142 @@ const PetForm = () => {
                     <h2 className="text-xl text-blue-800 font-bold">Care Info</h2>
                     {/* Potty break schedule */}
                     <div>
-                        <div>
-                            <label className="block text-xs text-gray-600 uppercase">Potty break schedule</label>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="everyHour"
-                                    name="pottyBreakSchedule"
-                                    value="everyHour"
-                                    checked={pottyBreakSchedule === 'everyHour'}
-                                    onChange={handlePottyBreakScheduleChange}
+                        <div className="block text-xs text-gray-600 uppercase">Potty break schedule</div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'everyHour'}
+                                    labelText={'every hour'}
+                                    condition={pottyBreakSchedule}
+                                    compareCondition={1}
+                                    onClick={async () => handlePottyBreakScheduleChange(1)}
                                 />
-                                <label htmlFor="everyHour">Every hour</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="2hours"
-                                    name="pottyBreakSchedule"
-                                    value="2hours"
-                                    checked={pottyBreakSchedule === '2hours'}
-                                    onChange={handlePottyBreakScheduleChange}
+
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'2hours'}
+                                    labelText={'Every 2 hours'}
+                                    condition={pottyBreakSchedule}
+                                    compareCondition={2}
+                                    onClick={async () => handlePottyBreakScheduleChange(2)}
                                 />
-                                <label htmlFor="2hours">Every 2 hours</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="4hours"
-                                    name="pottyBreakSchedule"
-                                    value="4hours"
-                                    checked={pottyBreakSchedule === '4hours'}
-                                    onChange={handlePottyBreakScheduleChange}
+
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'4hours'}
+                                    labelText={'Every 4 hours'}
+                                    condition={pottyBreakSchedule}
+                                    compareCondition={4}
+                                    onClick={async () => handlePottyBreakScheduleChange(4)}
                                 />
-                                <label htmlFor="4hours">Every 4 hours</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="8hours"
-                                    name="pottyBreakSchedule"
-                                    value="8hours"
-                                    checked={pottyBreakSchedule === '8hours'}
-                                    onChange={handlePottyBreakScheduleChange}
+
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'8hours'}
+                                    labelText={'Every 8 hours'}
+                                    condition={pottyBreakSchedule}
+                                    compareCondition={8}
+                                    onClick={async () => handlePottyBreakScheduleChange(8)}
                                 />
-                                <label htmlFor="8hours">Every 8 hours</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="custom"
-                                    name="pottyBreakSchedule"
-                                    value="custom"
-                                    checked={pottyBreakSchedule === 'custom'}
-                                    onChange={handlePottyBreakScheduleChange}
+
+                            <div className="col-span-2 md:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'custom'}
+                                    labelText={'Custom'}
+                                    condition={pottyBreakSchedule}
+                                    compareCondition={0}
+                                    onClick={async () => handlePottyBreakScheduleChange(0)}
                                 />
-                                <label htmlFor="custom">Custom</label>
                             </div>
-                            {pottyBreakSchedule === 'custom' && (
-                                <textarea
-                                    value={pottyBreakCustom}
-                                    onChange={handlePottyBreakCustomChange}
-                                    placeholder="Enter custom schedule"
-                                />
-                            )}
                         </div>
+                        {pottyBreakSchedule === 0 && (
+                            <textarea
+                                value={pottyBreakCustom}
+                                onChange={handlePottyBreakCustomChange}
+                                placeholder="Enter custom potty break schedule"
+                                className='w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm'
+                            />
+                        )}
                     </div>
 
                     {/* Energy Level */}
                     <div>
-                        <div>
-                            <label className="block text-xs text-gray-600 uppercase">Energy Level</label>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="high"
-                                    name="energyLevel"
-                                    value="high"
-                                    checked={energyLevel === 'high'}
-                                    onChange={handleEnergyLevelChange}
-                                />
-                                <label htmlFor="high">High</label>
-                            </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="moderate"
-                                    name="energyLevel"
-                                    value="moderate"
-                                    checked={energyLevel === 'moderate'}
-                                    onChange={handleEnergyLevelChange}
-                                />
-                                <label htmlFor="moderate">Moderate</label>
-                            </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="low"
-                                    name="energyLevel"
-                                    value="low"
-                                    checked={energyLevel === 'low'}
-                                    onChange={handleEnergyLevelChange}
-                                />
-                                <label htmlFor="low">Low</label>
-                            </div>
+                        <div className="block text-xs text-gray-600 uppercase">Energy Level</div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'high'}
+                                labelText={'High'}
+                                condition={energyLevel}
+                                compareCondition={3}
+                                onClick={async () => handleEnergyLevelChange(3)}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'moderate'}
+                                labelText={'Moderate'}
+                                condition={energyLevel}
+                                compareCondition={2}
+                                onClick={async () => handleEnergyLevelChange(2)}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'low'}
+                                labelText={'Low'}
+                                condition={energyLevel}
+                                compareCondition={1}
+                                onClick={async () => handleEnergyLevelChange(1)}
+                            />
                         </div>
                     </div>
 
                     {/* Feeding schedule */}
                     <div>
+                        <div className="block text-xs text-gray-600 uppercase">Feeding schedule</div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'morning'}
+                                labelText={'Morning'}
+                                condition={feedingSchedule}
+                                compareCondition={2}
+                                onClick={async () => handleFeedingScheduleChange(2)}
+                            />
+                                
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'twiceADay'}
+                                labelText={'Twice a day'}
+                                condition={feedingSchedule}
+                                compareCondition={1}
+                                onClick={async () => handleFeedingScheduleChange(1)}
+                            />
+                                
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'customFeeding'}
+                                labelText={'Custom'}
+                                condition={feedingSchedule}
+                                compareCondition={0}
+                                onClick={async () => handleFeedingScheduleChange(0)}
+                            />
+                        </div>
                         <div>
-                            <label className="block text-xs text-gray-600 uppercase">Feeding schedule</label>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="morning"
-                                    name="feedingSchedule"
-                                    value="morning"
-                                    checked={feedingSchedule === 'morning'}
-                                    onChange={handleFeedingScheduleChange}
-                                />
-                                <label htmlFor="morning">Morning</label>
-                            </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="twiceADay"
-                                    name="feedingSchedule"
-                                    value="twiceADay"
-                                    checked={feedingSchedule === 'twiceADay'}
-                                    onChange={handleFeedingScheduleChange}
-                                />
-                                <label htmlFor="twiceADay">Twice a day</label>
-                            </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="customFeeding"
-                                    name="feedingSchedule"
-                                    value="customFeeding"
-                                    checked={feedingSchedule === 'customFeeding'}
-                                    onChange={handleFeedingScheduleChange}
-                                />
-                                <label htmlFor="customFeeding">Custom</label>
-                            </div>
-                            {feedingSchedule === 'customFeeding' && (
+                            {feedingSchedule === 0 && (
                                 <textarea
                                     value={customFeedingSchedule}
                                     onChange={handleCustomFeedingScheduleChange}
                                     placeholder="Enter custom feeding schedule"
+                                    className='w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm'
                                 />
                             )}
                         </div>
@@ -545,72 +529,99 @@ const PetForm = () => {
 
                     {/* Can be left alone */}
                     <div>
-                        <div>
-                            <label className="block text-xs text-gray-600 uppercase">Can be left alone</label>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="lessThan1"
-                                    name="aloneTime"
-                                    value="<1hour"
-                                    checked={aloneTime === '<1hour'}
-                                    onChange={handleAloneTimeChange}
+                        <div className="block text-xs text-gray-600 uppercase">Can be left alone</div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'lessThan1'}
+                                    labelText={`< 1 hour`}
+                                    condition={aloneTime}
+                                    compareCondition={1}
+                                    onClick={async () => handleAloneTimeChange(1)}
                                 />
-                                <label htmlFor="lessThan1">&lt; 1 hour</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="1to4"
-                                    name="aloneTime"
-                                    value="1-4hours"
-                                    checked={aloneTime === '1-4hours'}
-                                    onChange={handleAloneTimeChange}
+
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'1-4hours'}
+                                    labelText={'1-4 Hours'}
+                                    condition={aloneTime}
+                                    compareCondition={4}
+                                    onClick={async () => handleAloneTimeChange(4)}
                                 />
-                                <label htmlFor="1to4">1-4 hours</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="4to8"
-                                    name="aloneTime"
-                                    value="4-8hours"
-                                    checked={aloneTime === '4-8hours'}
-                                    onChange={handleAloneTimeChange}
+
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'4-8hours'}
+                                    labelText={'4-8 Hours'}
+                                    condition={aloneTime}
+                                    compareCondition={8}
+                                    onClick={async () => handleAloneTimeChange(8)}
                                 />
-                                <label htmlFor="4to8">4-8 hours</label>
                             </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="customAlone"
-                                    name="aloneTime"
-                                    value="customAlone"
-                                    checked={aloneTime === 'customAlone'}
-                                    onChange={handleAloneTimeChange}
+
+                            <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'customAlone'}
+                                    labelText={'Custom'}
+                                    condition={aloneTime}
+                                    compareCondition={0}
+                                    onClick={async () => handleAloneTimeChange(0)}
                                 />
-                                <label htmlFor="customAlone">Custom</label>
                             </div>
-                            {aloneTime === 'customAlone' && (
-                                <textarea
-                                    value={customAloneTime}
-                                    onChange={handleCustomAloneTimeChange}
-                                    placeholder="Enter custom time"
-                                />
-                            )}
                         </div>
+                        {aloneTime === 0 && (
+                            <textarea
+                                value={customAloneTime}
+                                onChange={handleCustomAloneTimeChange}
+                                placeholder="Enter custom alone time"
+                                className='w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm'
+                            />
+                        )}
                     </div>
 
                     {/* Medication */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Medication (select all that apply)</label>
-                        <div className="flex space-x-4">
-                            <input id="medicationPill" type="checkbox" value="medicationPill" />
-                            <label htmlFor="medicationTopical">Pill</label>
-                            <input id="medicationTopical" type="checkbox" value="medicationTopical" />
-                            <label htmlFor="medicationTopical">Topical</label>
-                            <input id="medicationInjection" type="checkbox" value="medicationInjection" />
-                            <label htmlFor="medicationInjection">Injection</label>
+                        <div className="block text-xs text-gray-600 uppercase">Medication (select all that apply)</div>
+                        <div className="grid grid-cols-2 gap-2">
+
+                            <div className='col-span-1 md:col-span-2 lg:col-span-1'>
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'medicationPill'}
+                                    labelText={'Pill'}
+                                    condition={isMedPill}
+                                    compareCondition={true}
+                                    onClick={async () => setIsMedPill(!isMedPill)}
+                                />
+                            </div>
+
+                            <div className='col-span-1 md:col-span-2 lg:col-span-1'>
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'medicationTopical'}
+                                    labelText={'Topical'}
+                                    condition={isMedTopical}
+                                    compareCondition={true}
+                                    onClick={async () => setIsMedTopical(!isMedTopical)}
+                                />
+                            </div>
+
+                            <div className='col-span-1 md:col-span-2 lg:col-span-1'>
+                                <ConditionalRadioButton
+                                    inputType={'radio'}
+                                    labelName={'medicationInjection'}
+                                    labelText={'Injection'}
+                                    condition={isMedInjection}
+                                    compareCondition={true}
+                                    onClick={async () => setIsMedInjection(!isMedInjection)}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -689,8 +700,8 @@ type TRadioButton = {
     inputType: string,
     labelName: string,
     labelText: string,
-    condition: boolean,
-    compareCondition: boolean,
+    condition: boolean | number,
+    compareCondition: boolean | number,
     onClick: () => {},
 }
 
