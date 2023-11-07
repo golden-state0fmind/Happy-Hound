@@ -99,44 +99,44 @@ const PetForm = () => {
 
             <form onSubmit={handleSavePetButton} >
                 {/* Pet Photo */}
-                <label htmlFor="petPhoto" className="block text-xs text-gray-600 uppercase font-semibold">Update Pet Photo</label>
-                <input id="petPhoto" type="file" className="border p-2 w-full" />
+                <label htmlFor="petPhoto" className="block text-xs text-gray-600 uppercase">Update Pet Photo</label>
+                <input id="petPhoto" type="file" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
 
                 {/* Pet Details */}
                 <h2 className="text-xl text-blue-800 font-bold">Pet details</h2>
                 <div className="space-y-4">
                     {/* Description */}
                     <div>
-                        <label htmlFor="description" className="block text-xs text-gray-600 uppercase font-semibold">Provide a description of your pet</label>
+                        <label htmlFor="description" className="block text-xs text-gray-600 uppercase">Provide a description of your pet</label>
                     </div>
 
                     {/* Name */}
                     <div>
-                        <label htmlFor="petName" className="block text-xs text-gray-600 uppercase font-semibold">Name</label>
-                        <input value={petInfo.petName} onChange={handlePetInfoChange} id="petName" type="text" className="border p-2 w-full" />
+                        <label htmlFor="petName" className="block text-xs text-gray-600 uppercase">Name</label>
+                        <input value={petInfo.petName} onChange={handlePetInfoChange} id="petName" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"/>
                     </div>
 
                     {/* Weight (lbs) */}
                     <div>
-                        <label htmlFor="petWeight" className="block text-xs text-gray-600 uppercase font-semibold">Weight (lbs)</label>
-                        <input value={petInfo.petWeight} onChange={handlePetInfoChange} id="petWeight" type="text" className="border p-2 w-full" />
+                        <label htmlFor="petWeight" className="block text-xs text-gray-600 uppercase">Weight (lbs)</label>
+                        <input value={petInfo.petWeight} onChange={handlePetInfoChange} id="petWeight" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                     </div>
 
                     {/* in Years and Months */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label htmlFor="petAgeYears" className="block text-xs text-gray-600 uppercase font-semibold">Age (Yr.) Years</label>
-                            <input value={petInfo.petAgeYears} onChange={handlePetInfoChange} id="petAgeYears" type="text" className="border p-2 w-full" />
+                            <label htmlFor="petAgeYears" className="block text-xs text-gray-600 uppercase">Age (Yr.) Years</label>
+                            <input value={petInfo.petAgeYears} onChange={handlePetInfoChange} id="petAgeYears" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                         </div>
                         <div>
-                            <label htmlFor="petAgeMonths" className="block text-xs text-gray-600 uppercase font-semibold">Age (Mo.) Months</label>
-                            <input value={petInfo.petAgeMonths} onChange={handlePetInfoChange} id="petAgeMonths" type="text" className="border p-2 w-full" />
+                            <label htmlFor="petAgeMonths" className="block text-xs text-gray-600 uppercase">Age (Mo.) Months</label>
+                            <input value={petInfo.petAgeMonths} onChange={handlePetInfoChange} id="petAgeMonths" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                         </div>
                     </div>
 
                     {/* Sex (Radio Buttons) */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Sex</label>
+                        <label className="block text-xs text-gray-600 uppercase">Sex</label>
                         <div className="flex space-x-4">
                             <input id="male" type="radio" name="petSex" value="male" />
                             <label htmlFor="male">Male</label>
@@ -147,15 +147,15 @@ const PetForm = () => {
 
                     {/* Breed(s) */}
                     <div>
-                        <label htmlFor="petBreeds" className="block text-xs text-gray-600 uppercase font-semibold">Breed(s)</label>
-                        <input value={petInfo.petBreeds} onChange={handlePetInfoChange} id="petBreeds" type="text" className="border p-2 w-full" />
+                        <label htmlFor="petBreeds" className="block text-xs text-gray-600 uppercase">Breed(s)</label>
+                        <input value={petInfo.petBreeds} onChange={handlePetInfoChange} id="petBreeds" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                         <p className="text-xs text-gray-600">Enter all breeds that apply. If your dog is a mixed breed, add ‘Mixed’ as well.</p>
                     </div>
 
                     <h2 className="text-xl text-blue-800 font-bold">Additional details</h2>
                     {/* Microchipped? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Microchipped?</label>
+                        <label className="block text-xs text-gray-600 uppercase">Microchipped?</label>
                         <div className="flex space-x-4">
                             <input onChange={handlePetInfoChange} id="microchipped-yes" type="radio" name="microchipped" value="yes" />
                             <label htmlFor="microchipped-yes">Yes</label>
@@ -166,7 +166,7 @@ const PetForm = () => {
 
                     {/* Spayed/Neutered? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Spayed/Neutered?</label>
+                        <label className="block text-xs text-gray-600 uppercase">Spayed/Neutered?</label>
                         <div className="flex space-x-4">
                             <input onChange={handlePetInfoChange} id="spayed-yes" type="radio" name="spayed" value="yes" />
                             <label htmlFor="spayed-yes">Yes</label>
@@ -177,7 +177,7 @@ const PetForm = () => {
 
                     {/* House trained? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">House trained?</label>
+                        <label className="block text-xs text-gray-600 uppercase">House trained?</label>
                         <div className="flex space-x-4">
                             <input onChange={handlePetInfoChange} id="house-trained-yes" type="radio" name="houseTrained" value="yes" />
                             <label htmlFor="house-trained-yes">Yes</label>
@@ -188,7 +188,7 @@ const PetForm = () => {
 
                     {/* Friendly with children? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Friendly with children?</label>
+                        <label className="block text-xs text-gray-600 uppercase">Friendly with children?</label>
                         <div className="flex space-x-4">
                             <input onChange={handlePetInfoChange} id="friendly-children-yes" type="radio" name="friendlyChildren" value="yes" />
                             <label htmlFor="friendly-children-yes">Yes</label>
@@ -199,7 +199,7 @@ const PetForm = () => {
 
                     {/* Friendly with dogs? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Friendly with dogs?</label>
+                        <label className="block text-xs text-gray-600 uppercase">Friendly with dogs?</label>
                         <div className="flex space-x-4">
                             <input onChange={handlePetInfoChange} id="friendly-dogs-yes" type="radio" name="friendlyDogs" value="yes" />
                             <label htmlFor="friendly-dogs-yes">Yes</label>
@@ -210,7 +210,7 @@ const PetForm = () => {
 
                     {/* Friendly with cats? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Friendly with cats?</label>
+                        <label className="block text-xs text-gray-600 uppercase">Friendly with cats?</label>
                         <div className="flex space-x-4">
                             <input onChange={handlePetInfoChange} id="friendly-cat-yes" type="radio" name="friendlyCat" value="yes" />
                             <label htmlFor="friendly-cat-yes">Yes</label>
@@ -221,21 +221,21 @@ const PetForm = () => {
 
                     {/* Adoption date */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Adoption date</label>
-                        <input value={petInfo.adoptionDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="border p-2 w-full" />
+                        <label className="block text-xs text-gray-600 uppercase">Adoption date</label>
+                        <input value={petInfo.adoptionDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                     </div>
 
                     {/* About your pet */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">About your pet</label>
-                        <textarea value={petInfo.aboutPet} onChange={handlePetInfoChange} id="aboutPet" className="border p-2 w-full"></textarea>
+                        <label className="block text-xs text-gray-600 uppercase">About your pet</label>
+                        <textarea value={petInfo.aboutPet} onChange={handlePetInfoChange} id="aboutPet" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
 
                     <h2 className="text-xl text-blue-800 font-bold">Care Info</h2>
                     {/* Potty break schedule */}
                     <div>
                         <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold">Potty break schedule</label>
+                            <label className="block text-xs text-gray-600 uppercase">Potty break schedule</label>
                             <div>
                                 <input
                                     type="radio"
@@ -304,7 +304,7 @@ const PetForm = () => {
                     {/* Energy Level */}
                     <div>
                         <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold">Energy Level</label>
+                            <label className="block text-xs text-gray-600 uppercase">Energy Level</label>
                             <div>
                                 <input
                                     type="radio"
@@ -344,7 +344,7 @@ const PetForm = () => {
                     {/* Feeding schedule */}
                     <div>
                         <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold">Feeding schedule</label>
+                            <label className="block text-xs text-gray-600 uppercase">Feeding schedule</label>
                             <div>
                                 <input
                                     type="radio"
@@ -391,7 +391,7 @@ const PetForm = () => {
                     {/* Can be left alone */}
                     <div>
                         <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold">Can be left alone</label>
+                            <label className="block text-xs text-gray-600 uppercase">Can be left alone</label>
                             <div>
                                 <input
                                     type="radio"
@@ -448,28 +448,27 @@ const PetForm = () => {
 
                     {/* Medication */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Medication (select all that apply)</label>
+                        <label className="block text-xs text-gray-600 uppercase">Medication (select all that apply)</label>
                         <div className="flex space-x-4">
-                            <input id="medication1" type="checkbox" value="med1" />
-                            <label htmlFor="medication1">Pill</label>
-                            <input id="medication2" type="checkbox" value="med2" />
-                            <label htmlFor="medication2">Topical</label>
-                            <input id="medication3" type="checkbox" value="med3" />
-                            <label htmlFor="medication3">Injection</label>
-                            
+                            <input id="medicationPill" type="checkbox" value="medicationPill" />
+                            <label htmlFor="medicationTopical">Pill</label>
+                            <input id="medicationTopical" type="checkbox" value="medicationTopical" />
+                            <label htmlFor="medicationTopical">Topical</label>
+                            <input id="medicationInjection" type="checkbox" value="medicationInjection" />
+                            <label htmlFor="medicationInjection">Injection</label>
                         </div>
                     </div>
 
                     {/* Anything else a sitter should know? */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Anything else a sitter should know?</label>
-                        <textarea id="additionalInfo" className="border p-2 w-full"></textarea>
+                        <label className="block text-xs text-gray-600 uppercase">Anything else a sitter should know?</label>
+                        <textarea id="additionalInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
 
                     {/* Add details about your pets health and care providers */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Add details about your pet&apos;s health and care providers</label>
-                        <textarea id="healthInfo" className="border p-2 w-full"></textarea>
+                        <label className="block text-xs text-gray-600 uppercase">Add details about your pet&apos;s health and care providers</label>
+                        <textarea id="healthInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
 
                     <h2 className="text-xl text-blue-800 font-bold">Health Info</h2>
@@ -477,36 +476,36 @@ const PetForm = () => {
                     <div>
                         <div className='grid grid-cols-2 gap-4'>
                             <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold">Veterinary Name</label>
+                            <label className="block text-xs text-gray-600 uppercase">Veterinary Name</label>
                                 <input
                                     id="vetName"
                                     type="text"
                                     value={vetInfo.vetName}
                                     onChange={handleVetInfoChange}
-                                    className="border p-2 w-full"
+                                    className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                     placeholder=""
                                 />
                             </div>
                             <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold">Veterinary Phone</label>
+                            <label className="block text-xs text-gray-600 uppercase">Veterinary Phone</label>
                                 <input
                                     id="vetPhone"
                                     type="tel"
                                     value={vetInfo.vetPhone}
                                     onChange={handleVetInfoChange}
-                                    className="border p-2 w-full"
+                                    className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                     placeholder=""
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-xs text-gray-600 uppercase font-semibold mt-5">Veterinary Address</label>
+                            <label className="block text-xs text-gray-600 uppercase mt-5">Veterinary Address</label>
                             <input
                                 id="vetAddress"
                                 type="text"
                                 value={vetInfo.vetAddress}
                                 onChange={handleVetInfoChange}
-                                className="border p-2 w-full my-2"
+                                className="w-full my-2 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                 placeholder=""
                             />
                         </div>
