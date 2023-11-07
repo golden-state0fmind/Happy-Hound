@@ -466,9 +466,9 @@ const PetForm = () => {
                         <textarea id="additionalInfo" className="border p-2 w-full"></textarea>
                     </div>
 
-                    {/* Add details about your pet's health and care providers */}
+                    {/* Add details about your pets health and care providers */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase font-semibold">Add details about your pet's health and care providers</label>
+                        <label className="block text-xs text-gray-600 uppercase font-semibold">Add details about your pet&apos;s health and care providers</label>
                         <textarea id="healthInfo" className="border p-2 w-full"></textarea>
                     </div>
 
