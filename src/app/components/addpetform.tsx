@@ -5,6 +5,13 @@ import LoadingDots from './loading-dots';
 const PetForm = () => {
     const [aloneTime, setAloneTime] = useState('');
     const [energyLevel, setEnergyLevel] = useState('');
+    const [isMale, setIsMale] = useState<boolean>(false);
+    const [isSpayed, setIsSpayed] = useState<boolean>(false);
+    const [isHouseTrained, setIsHouseTrained] = useState<boolean>(false);
+    const [isChildFriendly, setIsChildFriendly] = useState<boolean>(false);
+    const [isDogFriendly, setIsDogFriendly] = useState<boolean>(false);
+    const [isCatFriendly, setIsCatFriendly] = useState<boolean>(false);
+    const [isMicrochipped, setIsMicrochipped] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [customAloneTime, setCustomAloneTime] = useState('');
     const [feedingSchedule, setFeedingSchedule] = useState('');
@@ -22,9 +29,9 @@ const PetForm = () => {
         petWeight: '',
         petAgeYears: '',
         petAgeMonths: '',
-        petSex: '',
+        petSex: isMale,
         petBreeds: '',
-        isMicrochipped: '',
+        isMicrochipped: isMicrochipped,
         isSpayed: '',
         isHouseTrained: '',
         isFriendlyWithChildren: '',
@@ -33,6 +40,71 @@ const PetForm = () => {
         adoptionDate: '',
         aboutPet: ''
     });
+
+    const today = new Date();
+    const day = today.getDate().toString().padStart(2, '0'); // Get the day (1-31) and pad with zero if needed
+    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Get the month (0-11); +1 to make it 1-12 and pad with zero if needed
+    const year = today.getFullYear(); // Get the year (e.g., 2023)
+
+    // Provided date in MM/DD/YYYY format
+    const providedDate = `${month}/${day}/${year}`;
+
+    // Convert to YYYY-MM-DD format
+    const parts = providedDate.split('/');
+    const formattedDate = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+
+    const handlePetSexChange = (value: string) => {
+        if (value === 'male') {
+            setIsMale(true);
+        } else if (value === 'female') {
+            setIsMale(false);
+        }
+    };
+
+    const handleIsMicrochipped = (value: string) => {
+        if (value === 'Yes') {
+            setIsMicrochipped(true);
+        } else if (value === 'No') {
+            setIsMicrochipped(false);
+        }
+    };
+
+    const handleIsSpayed = (value: string) => {
+        if (value === 'Yes') {
+            setIsSpayed(true);
+        } else if (value === 'No') {
+            setIsSpayed(false);
+        }
+    };
+
+    const handleIsHouseTrained = (value: string) => {
+        if (value === 'Yes') {
+            setIsHouseTrained(true);
+        } else if (value === 'No') {
+            setIsHouseTrained(false);
+        }
+    };
+    const handleIsChildFriendly = (value: string) => {
+        if (value === 'Yes') {
+            setIsChildFriendly(true);
+        } else if (value === 'No') {
+            setIsChildFriendly(false);
+        }
+    };
+    const handleIsDogFriendly = (value: string) => {
+        if (value === 'Yes') {
+            setIsDogFriendly(true);
+        } else if (value === 'No') {
+            setIsDogFriendly(false);
+        }
+    };
+    const handleIsCatFriendly = (value: string) => {
+        if (value === 'Yes') {
+            setIsCatFriendly(true);
+        } else if (value === 'No') {
+            setIsCatFriendly(false);
+        }
+    };
 
     const handlePetInfoChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = event.target;
@@ -113,7 +185,7 @@ const PetForm = () => {
                     {/* Name */}
                     <div>
                         <label htmlFor="petName" className="block text-xs text-gray-600 uppercase">Name</label>
-                        <input value={petInfo.petName} onChange={handlePetInfoChange} id="petName" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"/>
+                        <input value={petInfo.petName} onChange={handlePetInfoChange} id="petName" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                     </div>
 
                     {/* Weight (lbs) */}
@@ -135,14 +207,25 @@ const PetForm = () => {
                     </div>
 
                     {/* Sex (Radio Buttons) */}
-                    <div>
-                        <label className="block text-xs text-gray-600 uppercase">Sex</label>
-                        <div className="flex space-x-4">
-                            <input id="male" type="radio" name="petSex" value="male" />
-                            <label htmlFor="male">Male</label>
-                            <input id="female" type="radio" name="petSex" value="female" />
-                            <label htmlFor="female">Female</label>
-                        </div>
+                    <div className="flex space-x-4">
+                        {/* Male Radio Button */}
+                        <ConditionalRadioButton
+                            inputType={'text'} 
+                            labelName={'male'}
+                            labelText={'Male'}
+                            condition={isMale}
+                            compareCondition={true}
+                            onClick={async () => handlePetSexChange('male')}
+                        />
+                        {/* Female Radio Button */}
+                        <ConditionalRadioButton
+                            inputType={'text'} 
+                            labelName={'female'}
+                            labelText={'Female'}
+                            condition={isMale}
+                            compareCondition={false}
+                            onClick={async () => handlePetSexChange('female')}
+                        />
                     </div>
 
                     {/* Breed(s) */}
@@ -157,10 +240,22 @@ const PetForm = () => {
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Microchipped?</label>
                         <div className="flex space-x-4">
-                            <input onChange={handlePetInfoChange} id="microchipped-yes" type="radio" name="microchipped" value="yes" />
-                            <label htmlFor="microchipped-yes">Yes</label>
-                            <input onChange={handlePetInfoChange} id="microchipped-no" type="radio" name="microchipped" value="no" />
-                            <label htmlFor="microchipped-no">No</label>
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'microchipped-yes'}
+                                labelText={'Yes'}
+                                condition={isMicrochipped}
+                                compareCondition={true}
+                                onClick={async () => handleIsMicrochipped('Yes')}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'microchipped-no'}
+                                labelText={'No'}
+                                condition={isMicrochipped}
+                                compareCondition={false}
+                                onClick={async () => handleIsMicrochipped('No')}
+                            />
                         </div>
                     </div>
 
@@ -168,10 +263,22 @@ const PetForm = () => {
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Spayed/Neutered?</label>
                         <div className="flex space-x-4">
-                            <input onChange={handlePetInfoChange} id="spayed-yes" type="radio" name="spayed" value="yes" />
-                            <label htmlFor="spayed-yes">Yes</label>
-                            <input onChange={handlePetInfoChange} id="spayed-no" type="radio" name="spayed" value="no" />
-                            <label htmlFor="spayed-no">No</label>
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'spayed-yes'}
+                                labelText={'Yes'}
+                                condition={isSpayed}
+                                compareCondition={true}
+                                onClick={async () => handleIsSpayed('Yes')}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'spayed-no'}
+                                labelText={'No'}
+                                condition={isSpayed}
+                                compareCondition={false}
+                                onClick={async () => handleIsSpayed('No')}
+                            />
                         </div>
                     </div>
 
@@ -179,10 +286,22 @@ const PetForm = () => {
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">House trained?</label>
                         <div className="flex space-x-4">
-                            <input onChange={handlePetInfoChange} id="house-trained-yes" type="radio" name="houseTrained" value="yes" />
-                            <label htmlFor="house-trained-yes">Yes</label>
-                            <input onChange={handlePetInfoChange} id="house-trained-no" type="radio" name="houseTrained" value="no" />
-                            <label htmlFor="house-trained-no">No</label>
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'house-trained-yes'}
+                                labelText={'Yes'}
+                                condition={isHouseTrained}
+                                compareCondition={true}
+                                onClick={async () => handleIsHouseTrained('Yes')}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'house-trained-no'}
+                                labelText={'No'}
+                                condition={isHouseTrained}
+                                compareCondition={false}
+                                onClick={async () => handleIsHouseTrained('No')}
+                            />
                         </div>
                     </div>
 
@@ -190,10 +309,22 @@ const PetForm = () => {
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Friendly with children?</label>
                         <div className="flex space-x-4">
-                            <input onChange={handlePetInfoChange} id="friendly-children-yes" type="radio" name="friendlyChildren" value="yes" />
-                            <label htmlFor="friendly-children-yes">Yes</label>
-                            <input onChange={handlePetInfoChange} id="friendly-children-no" type="radio" name="friendlyChildren" value="no" />
-                            <label htmlFor="friendly-children-no">No</label>
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'friendly-children-yes'}
+                                labelText={'Yes'}
+                                condition={isChildFriendly}
+                                compareCondition={true}
+                                onClick={async () => handleIsChildFriendly('Yes')}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'friendly-children-no'}
+                                labelText={'No'}
+                                condition={isChildFriendly}
+                                compareCondition={false}
+                                onClick={async () => handleIsChildFriendly('No')}
+                            />
                         </div>
                     </div>
 
@@ -201,10 +332,22 @@ const PetForm = () => {
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Friendly with dogs?</label>
                         <div className="flex space-x-4">
-                            <input onChange={handlePetInfoChange} id="friendly-dogs-yes" type="radio" name="friendlyDogs" value="yes" />
-                            <label htmlFor="friendly-dogs-yes">Yes</label>
-                            <input onChange={handlePetInfoChange} id="friendly-dogs-no" type="radio" name="friendlyDogs" value="no" />
-                            <label htmlFor="friendly-dogs-no">No</label>
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'friendly-dogs-yes'}
+                                labelText={'Yes'}
+                                condition={isDogFriendly}
+                                compareCondition={true}
+                                onClick={async () => handleIsDogFriendly('Yes')}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'friendly-dogs-no'}
+                                labelText={'No'}
+                                condition={isDogFriendly}
+                                compareCondition={false}
+                                onClick={async () => handleIsDogFriendly('No')}
+                            />
                         </div>
                     </div>
 
@@ -212,17 +355,29 @@ const PetForm = () => {
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Friendly with cats?</label>
                         <div className="flex space-x-4">
-                            <input onChange={handlePetInfoChange} id="friendly-cat-yes" type="radio" name="friendlyCat" value="yes" />
-                            <label htmlFor="friendly-cat-yes">Yes</label>
-                            <input onChange={handlePetInfoChange} id="friendly-cat-no" type="radio" name="friendlyCat" value="no" />
-                            <label htmlFor="friendly-cat-no">No</label>
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'friendly-cat-yes'}
+                                labelText={'Yes'}
+                                condition={isCatFriendly}
+                                compareCondition={true}
+                                onClick={async () => handleIsCatFriendly('Yes')}
+                            />
+                            <ConditionalRadioButton
+                                inputType={'radio'}
+                                labelName={'friendly-cat-no'}
+                                labelText={'No'}
+                                condition={isCatFriendly}
+                                compareCondition={false}
+                                onClick={async () => handleIsCatFriendly('No')}
+                            />
                         </div>
                     </div>
 
                     {/* Adoption date */}
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Adoption date</label>
-                        <input value={petInfo.adoptionDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                        <input defaultValue={formattedDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                     </div>
 
                     {/* About your pet */}
@@ -476,7 +631,7 @@ const PetForm = () => {
                     <div>
                         <div className='grid grid-cols-2 gap-4'>
                             <div>
-                            <label className="block text-xs text-gray-600 uppercase">Veterinary Name</label>
+                                <label className="block text-xs text-gray-600 uppercase">Veterinary Name</label>
                                 <input
                                     id="vetName"
                                     type="text"
@@ -487,7 +642,7 @@ const PetForm = () => {
                                 />
                             </div>
                             <div>
-                            <label className="block text-xs text-gray-600 uppercase">Veterinary Phone</label>
+                                <label className="block text-xs text-gray-600 uppercase">Veterinary Phone</label>
                                 <input
                                     id="vetPhone"
                                     type="tel"
@@ -526,6 +681,31 @@ const PetForm = () => {
                     )}
                 </button>
             </form>
+        </div>
+    );
+};
+
+type TRadioButton = {
+    inputType: string,
+    labelName: string,
+    labelText: string,
+    condition: boolean,
+    compareCondition: boolean,
+    onClick: () => {},
+}
+
+const ConditionalRadioButton = ({ inputType, labelName, labelText, condition, compareCondition, onClick }: TRadioButton) => {
+    return (
+        <div onClick={onClick} className={`relative flex row-reverse text-base`}>
+            <div className={`w-6 h-6 mr-2 border-2 ${condition === compareCondition ? 'border-green-600' : 'border-blue-800'} rounded-full flex items-center justify-center`}>
+                {condition === compareCondition && (
+                    <div className='text-green-600'> &#x2713; </div>
+                )}
+            </div>
+            <label htmlFor={`${labelName}`} className={`capitalize ${condition === compareCondition ? 'text-green-600' : 'text-blue-800'}`}>
+                {labelText}
+                <input id={`${labelName}`} name={`${labelName}`} type={`${inputType}`} hidden />
+            </label>
         </div>
     );
 };
