@@ -166,7 +166,7 @@ const PetForm = () => {
     };
     
     return (
-        <div className="w-full md:w-4/5 lg:w-2/4 md:mx-auto bg-gray-50 px-4 py-8 sm:px-16 space-y-4 mt-8 mb-8 rounded-2xl border border-gray-100 shadow-xl">
+        <div className="w-full md:w-4/5 lg:w-2/4 md:mx-auto bg-gray-50 px-4 py-8 sm:px-16 space-y-4 mt-3 mb-8 rounded-2xl border border-gray-100 shadow-xl">
             <h1 className="text-2xl text-blue-800 font-bold mb-4">Tell us about your pet</h1>
 
             <form onSubmit={handleSavePetButton} >
