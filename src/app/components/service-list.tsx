@@ -1,5 +1,5 @@
 "use client"
-import { toggleService } from '../reducers/serviceReducer'
+import { ServicesState, toggleService } from '../reducers/serviceReducer'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../reducers';
 import { useState } from 'react';
@@ -24,11 +24,11 @@ const ServicesList = () => {
         }
     };
 
-    const handleServiceToggle = (service: any) => {
+    const handleServiceToggle = (service: keyof ServicesState) => {
         dispatch(toggleService(service));
     };
 
-    const handleFindDogSitter = (e: any) => {
+    const handleFindDogSitter = (e: React.FormEvent<HTMLButtonElement>) => {
         if (dropInVisits || dogWalking || houseSitting) {
             e.preventDefault();
             setLoading(true);
