@@ -6,7 +6,7 @@ export default async function Home() {
 
     return (
         <div className="flex bg-white">
-            <div className="w-screen flex flex-col space-y-5 justify-center items-center mt-3 mb-8">
+            <div className="w-screen flex flex-col space-y-5 justify-center items-center mt-3 md:mt-8 mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full p
                 -3 md:w-4/5 md:p-0 md:h-2/4">
                     {/* START COLUMN 1 */}
