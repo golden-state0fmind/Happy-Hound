@@ -160,7 +160,7 @@ const PetForm = () => {
         setCustomFeedingSchedule(event.target.value);
     };
 
-    const handleSavePetButton = (e: any) => {
+    const handleSavePetButton = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
     };
