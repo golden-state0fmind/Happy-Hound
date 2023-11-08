@@ -54,7 +54,7 @@ const FindSitterForm = () => {
         }
     }
 
-    const handleZipCodeInput = (e: any) => {
+    const handleZipCodeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         const formattedZip = formatZipCode(value)
         setZipCode(formattedZip)
