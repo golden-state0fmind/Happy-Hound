@@ -3,10 +3,10 @@ import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-    const { username, email, password, role } = await req.json();
+    const { firstName, lastName, email, password, role } = await req.json();
     const exists = await prisma.user.findUnique({
         where: {
-            email, //emails are more unique than usernames and roles
+            email, //emails are more unique than names and roles
         },
     });
     if (exists) {
@@ -15,7 +15,8 @@ export async function POST(req: Request) {
         // need to pass the form params here to send
         const user = await prisma.user.create({
             data: {
-                username,
+                firstName,
+                lastName,
                 email,
                 password: await hash(password, 10),
                 role
