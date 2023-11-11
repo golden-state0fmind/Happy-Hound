@@ -2,9 +2,9 @@
 // might need to add later in generator: previewFeatures = ["jsonProtocol"]
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("HHPOSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("HHPOSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 generator client {
@@ -16,18 +16,94 @@ enum UserRole {
   DOG_SITTER
 }
 
+enum DogSex {
+  female
+  male
+}
+
 model User {
-  id       Int       @id @default(autoincrement())
-  username String    @unique
-  email    String    @unique
-  password String    @unique
-  role     UserRole
-  dogs     Dog[]    @relation("DogOwner")
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String    @unique
+  role      UserRole
+  dogs      Dog[]
+  profile   Profile?
+  payments  Payment[]
 }
 
 model Dog {
+  id                 Int          @id @default(autoincrement())
+  name               String
+  userId             Int          @unique
+  user               User         @relation(fields: [userId], references: [id])
+  history            DogHistory[]
+  photo              String?
+  weight             String
+  birthMonth         String
+  birthYear          String
+  sex                DogSex
+  breed              String
+  microchipped       Boolean
+  spayed             Boolean
+  houseTrained       Boolean
+  childFriendly      Boolean
+  dogFriendly        Boolean
+  catFriendly        Boolean
+  adoptionDate       String
+  aboutPet           String
+  pottyBreakSchedule String
+  energyLevel        Int
+  feedingSchedule    String
+  aloneTime          String
+  medication         String
+  additionalInfo     String?
+  healthInfo         String?
+  vetName            String?
+  vetPhone           Int?
+  vetAddress         String?
+}
+
+model DogHistory {
+  id        Int      @id @default(autoincrement())
+  sitterId  Int
+  note      String
+  startTime DateTime
+  endTime   DateTime
+  Dog       Dog?     @relation(fields: [dogId], references: [id])
+  dogId     Int?
+}
+
+model Profile {
+  id            Int     @id @default(autoincrement())
+  userId        Int     @unique
+  user          User    @relation(fields: [userId], references: [id])
+  address       String?
+  city          String?
+  state         String?
+  postcode      Int?
+  country       String?
+  photo         String?
+  age           String?
+  phone         Int?
+  eContactName  String?
+  eContactPhone Int?
+}
+
+model Payment {
   id       Int     @id @default(autoincrement())
-  name     String
-  owner    User    @relation("DogOwner", fields: [ownerId], references: [id])
-  ownerId  Int
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id])
+  noc      String
+  number   Int
+  expMonth Int
+  expYear  Int
+  cvc      Int
+  country  String
+  address  String
+  apt      String?
+  city     String
+  state    String
+  postcode Int
 }
