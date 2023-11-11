@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export default function Form({ type }: { type: "login" | "register" }) {
     const [loading, setLoading] = useState(false);
-    const [selectedRole, setSelectedRole] = useState(""); 
+    const [selectedRole, setSelectedRole] = useState("DOG_OWNER"); 
     // Event handler to update the selected role
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedRole(e.target.value);
@@ -43,7 +43,8 @@ export default function Form({ type }: { type: "login" | "register" }) {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            username: e.currentTarget.username.value,
+                            firstName: e.currentTarget.firstName.value,
+                            lastName: e.currentTarget.lastName.value,
                             email: e.currentTarget.email.value,
                             password: e.currentTarget.password.value,
                             role: selectedRole
@@ -62,25 +63,39 @@ export default function Form({ type }: { type: "login" | "register" }) {
                     });
                 }
             }}
-            className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
-        >
+            className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16">
             {/* STARTS USERNAME */}
             <div>
                 {
                     type === "register"
                         ? <>
                             <label
-                                htmlFor="username"
+                                htmlFor="firstName"
                                 className="block text-xs text-gray-600 uppercase"
                             >
-                                Username
+                                First Name
                             </label>
                             <input
-                                id="username"
-                                name="username"
+                                id="firstName"
+                                name="firstName"
                                 type="text"
-                                placeholder="MarioThePitbull"
-                                autoComplete="username"
+                                placeholder="John"
+                                autoComplete="firstName"
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                            <label
+                                htmlFor="lastName"
+                                className="block text-xs text-gray-600 uppercase mt-4"
+                            >
+                                last Name
+                            </label>
+                            <input
+                                id="lastName"
+                                name="lastName"
+                                type="text"
+                                placeholder="Wick"
+                                autoComplete="lastName"
                                 required
                                 className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                             />
@@ -145,7 +160,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
                                 value={selectedRole}
                                 onChange={handleRoleChange}
                             >
-                                <option value="DOG_OWNER">DOG OWNER</option>
+                                <option defaultValue="DOG_OWNER">DOG OWNER</option>
                                 <option value="DOG_SITTER">DOG SITTER</option>
                             </select>
                         </>
