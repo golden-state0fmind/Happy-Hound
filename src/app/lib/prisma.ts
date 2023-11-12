@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
 
 // declare global {
 //   var prisma: PrismaClient | undefined;
@@ -13,9 +12,4 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-async function getUsersHandler(req: NextApiRequest, res: NextApiResponse) {
-    const users = await prisma.user.findMany();
-    res.json(users);
-}
-
-export { prisma, getUsersHandler }
+export { prisma }
