@@ -1,111 +1,162 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoadingDots from './loading-dots';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers';
+
+type AddPetProps = {
+    name: string,                       
+    userId: number | null,                
+    photo: string,                      
+    weight: string,                     
+    birthMonth: string,                
+    birthYear: string,                  
+    sex: string,                        
+    breed: string,                      
+    microchipped: null | boolean,   
+    spayed: null | boolean,               
+    houseTrained: null | boolean,   
+    childFriendly: null | boolean, 
+    dogFriendly: null | boolean,     
+    catFriendly: null | boolean,     
+    adoptionDate: null | string,    
+    aboutPet: string,                   
+    pottyBreakSchedule: string,         
+    energyLevel: number | null,                 
+    feedingSchedule: string,            
+    aloneTime: string,                  
+    medication: string,                 
+    additionalInfo: string,             
+    healthInfo: string,                 
+    vetName: string,                    
+    vetPhone: string,                   
+    vetAddress: string
+}
 
 const PetForm = () => {
-    const [aloneTime, setAloneTime] = useState<number>(4);
-    const [energyLevel, setEnergyLevel] = useState<number>(2);
-    const [isMale, setIsMale] = useState<boolean>(false);
-    const [isSpayed, setIsSpayed] = useState<boolean>(false);
-    const [isHouseTrained, setIsHouseTrained] = useState<boolean>(false);
-    const [isChildFriendly, setIsChildFriendly] = useState<boolean>(false);
-    const [isDogFriendly, setIsDogFriendly] = useState<boolean>(false);
-    const [isCatFriendly, setIsCatFriendly] = useState<boolean>(false);
-    const [isMicrochipped, setIsMicrochipped] = useState<boolean>(false);
+    const user = useSelector((state: RootState) => state.user);
+    const [aloneTime, setAloneTime] = useState<number | null>(null);
+    const [energyLevel, setEnergyLevel] = useState<number | null>(null);
+    const [isMale, setIsMale] = useState<boolean | null>(null);
+    const [isSpayed, setIsSpayed] = useState<boolean | null>(null);
+    const [isHouseTrained, setIsHouseTrained] = useState<boolean | null>(null);
+    const [isChildFriendly, setIsChildFriendly] = useState<boolean | null>(null);
+    const [isDogFriendly, setIsDogFriendly] = useState<boolean | null>(null);
+    const [isCatFriendly, setIsCatFriendly] = useState<boolean | null>(null);
+    const [isMicrochipped, setIsMicrochipped] = useState<boolean | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [customAloneTime, setCustomAloneTime] = useState('');
-    const [feedingSchedule, setFeedingSchedule] = useState<number>(1);
+    const [feedingSchedule, setFeedingSchedule] = useState<number | null>(null);
     const [pottyBreakCustom, setPottyBreakCustom] = useState('');
-    const [pottyBreakSchedule, setPottyBreakSchedule] = useState<number>(2);
+    const [pottyBreakSchedule, setPottyBreakSchedule] = useState<number | null>(null);
     const [customFeedingSchedule, setCustomFeedingSchedule] = useState('');
     const [isMedPill, setIsMedPill] = useState<boolean>(false);
     const [isMedTopical, setIsMedTopical] = useState<boolean>(false);
     const [isMedInjection, setIsMedInjection] = useState<boolean>(false);
-    const [vetInfo, setVetInfo] = useState({
-        vetName: '',
-        vetAddress: '',
-        vetPhone: ''
-    });
-    const [petInfo, setPetInfo] = useState({
-        description: '',
-        petName: '',
-        petWeight: '',
-        petAgeYears: '',
-        petAgeMonths: '',
-        petSex: isMale,
-        petBreeds: '',
-        isMicrochipped: isMicrochipped,
-        isSpayed: '',
-        isHouseTrained: '',
-        isFriendlyWithChildren: '',
-        isFriendlyWithDogs: '',
-        isFriendlyWithCats: '',
-        adoptionDate: '',
-        aboutPet: ''
-    });
 
     const today = new Date();
     const day = today.getDate().toString().padStart(2, '0'); // Get the day (1-31) and pad with zero if needed
     const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Get the month (0-11); +1 to make it 1-12 and pad with zero if needed
     const year = today.getFullYear(); // Get the year (e.g., 2023)
-
     // Provided date in MM/DD/YYYY format
     const providedDate = `${month}/${day}/${year}`;
-
     // Convert to YYYY-MM-DD format
     const parts = providedDate.split('/');
     const formattedDate = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
 
+    const [petInfo, setPetInfo] = useState<AddPetProps>({
+        name: '',                       // TEXT NOT NULL
+        userId: user.id,                // INTEGER NOT NULL
+        photo: '',                      // TEXT
+        weight: '',                     // TEXT NOT NULL
+        birthMonth: '',                 // TEXT NOT NULL
+        birthYear: '',                  // TEXT NOT NULL
+        sex: '',                        // "DogSex" NOT NULL
+        breed: '',                      // TEXT NOT NULL
+        microchipped: null,             // BOOLEAN NOT NULL
+        spayed: null,                   // BOOLEAN NOT NULL
+        houseTrained: null,             // BOOLEAN NOT NULL
+        childFriendly: null,            // BOOLEAN NOT NULL
+        dogFriendly: null,              // BOOLEAN NOT NULL
+        catFriendly: null,              // BOOLEAN NOT NULL
+        adoptionDate: formattedDate,    // TEXT NOT NULL
+        aboutPet: '',                   // TEXT NOT NULL
+        pottyBreakSchedule: '',         // TEXT NOT NULL
+        energyLevel: null,                 // INTEGER NOT NULL
+        feedingSchedule: '',            // TEXT NOT NULL
+        aloneTime: '',                  // TEXT NOT NULL
+        medication: '',                 // TEXT NOT NULL
+        additionalInfo: '',             // TEXT
+        healthInfo: '',                 // TEXT
+        vetName: '',                    // TEXT
+        vetPhone: '',                   // INTEGER
+        vetAddress: ''                  // TEXT
+    });
+
     const handlePetSexChange = (value: string) => {
         if (value === 'male') {
             setIsMale(true);
+            petInfo.sex = value
         } else if (value === 'female') {
             setIsMale(false);
+            petInfo.sex = value
         }
     };
 
     const handleIsMicrochipped = (value: string) => {
         if (value === 'Yes') {
             setIsMicrochipped(true);
+            petInfo.microchipped = true;
         } else if (value === 'No') {
             setIsMicrochipped(false);
+            petInfo.microchipped = false;
         }
     };
 
     const handleIsSpayed = (value: string) => {
         if (value === 'Yes') {
             setIsSpayed(true);
+            petInfo.spayed = true;
         } else if (value === 'No') {
             setIsSpayed(false);
+            petInfo.spayed = false;
         }
     };
 
     const handleIsHouseTrained = (value: string) => {
         if (value === 'Yes') {
             setIsHouseTrained(true);
+            petInfo.houseTrained = true;
         } else if (value === 'No') {
             setIsHouseTrained(false);
+            petInfo.houseTrained = false;
         }
     };
     const handleIsChildFriendly = (value: string) => {
         if (value === 'Yes') {
             setIsChildFriendly(true);
+            petInfo.childFriendly = true;
         } else if (value === 'No') {
             setIsChildFriendly(false);
+            petInfo.childFriendly = false;
         }
     };
     const handleIsDogFriendly = (value: string) => {
         if (value === 'Yes') {
             setIsDogFriendly(true);
+            petInfo.dogFriendly = true;
         } else if (value === 'No') {
             setIsDogFriendly(false);
+            petInfo.dogFriendly = false;
         }
     };
     const handleIsCatFriendly = (value: string) => {
         if (value === 'Yes') {
             setIsCatFriendly(true);
+            petInfo.catFriendly = true;
         } else if (value === 'No') {
             setIsCatFriendly(false);
+            petInfo.catFriendly = false;
         }
     };
 
@@ -114,26 +165,23 @@ const PetForm = () => {
         setPetInfo({ ...petInfo, [id]: value });
     };
 
-    const handleVetInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = event.target;
-        setVetInfo({ ...vetInfo, [id]: value });
-    };
-
     const handlePottyBreakScheduleChange = (value: number) => {
-        
         setPottyBreakSchedule(value);
         if (value === 0) {
             // Show the textarea
             setPottyBreakCustom('');
         }
+        petInfo.pottyBreakSchedule = `Every ${value} Hours`;
     };
 
     const handlePottyBreakCustomChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPottyBreakCustom(event.target.value);
+        petInfo.pottyBreakSchedule = pottyBreakCustom
     };
 
     const handleEnergyLevelChange = (value: number) => {
         setEnergyLevel(value);
+        petInfo.energyLevel = value;
     };
 
     const handleAloneTimeChange = (value: number) => {
@@ -142,10 +190,20 @@ const PetForm = () => {
             // Show the textarea
             setCustomAloneTime('');
         }
+        if (value === 1) {
+            petInfo.aloneTime = '< 1 Hour';
+        }
+        if (value === 4) {
+            petInfo.aloneTime = '1-4 Hours';
+        }
+        if (value === 8) {
+            petInfo.aloneTime = '4-8 Hours';
+        }
     };
 
     const handleCustomAloneTimeChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setCustomAloneTime(event.target.value);
+        petInfo.aloneTime = customAloneTime;
     };
 
     const handleFeedingScheduleChange = (value: number) => {
@@ -154,88 +212,224 @@ const PetForm = () => {
             // Show the textarea
             setCustomFeedingSchedule('');
         }
+        if (value === 1) {
+            petInfo.feedingSchedule = 'Morning';
+        }
+        if (value === 2) {
+            petInfo.feedingSchedule = 'Twice a day';
+        }
     };
 
     const handleCustomFeedingScheduleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setCustomFeedingSchedule(event.target.value);
+        petInfo.feedingSchedule = customFeedingSchedule
     };
 
+    const checkForMedication = () => {
+        const medicalTreatment = [];
+        if (isMedPill) {
+            medicalTreatment.push('Medication Pill');
+        }
+        if (isMedTopical) {
+            medicalTreatment.push('Medication Topical');
+        }
+        if (isMedInjection) {
+            medicalTreatment.push('Medication Injection');
+        }
+        const medicationsAsString = medicalTreatment.join(', ');
+        petInfo.medication = medicationsAsString;
+    }
+
+    const handleAdditionalInfo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        petInfo.additionalInfo = event.target.value;
+    }
+
+    const handleHealthInfo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        petInfo.healthInfo = event.target.value;
+    }
+    
+    useEffect(() => {
+        checkForMedication();
+    }, [isMedPill, isMedTopical, isMedInjection]);
+
+    const [emptyFields, setEmptyFields] = useState<string[]>([]);
+    function findNullFields(data: any) {
+        const notNullFieldsArray = [
+            'name',
+            'userId',
+            'weight',
+            'birthMonth',
+            'birthYear',
+            'sex',
+            'breed',
+            'microchipped',
+            'spayed',
+            'houseTrained',
+            'childFriendly',
+            'dogFriendly',
+            'catFriendly',
+            'adoptionDate',
+            //'aboutPet',
+            'pottyBreakSchedule',
+            'energyLevel',
+            'feedingSchedule',
+            'aloneTime',
+            //'medication',
+        ];
+        // New array for updated state
+        const newEmptyFields: string[] = [];
+        // Searching for empty or null values for fields before posting to DB
+        for (const key of notNullFieldsArray) {
+            if (data[key] === '' || data[key] === null) {
+                newEmptyFields.push(key);
+            }
+        }
+        // Updating state
+        if (newEmptyFields.length > 0) {
+            setEmptyFields(newEmptyFields);
+            // There are fields with empty values that are supposed to be not null
+            console.log(`Please fill out the following fields: ${newEmptyFields.join(', ')}`);
+            setLoading(false);
+        } else {
+            // All required fields are filled
+            // Proceed with form submission or other actions
+            setLoading(true);
+        }
+    }
+    
     const handleSavePetButton = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
+        findNullFields(petInfo);
+        if (loading) {
+            console.log(petInfo)
+        }
+        console.log(loading, '=====save pet loading')
     };
-    
+
     return (
         <div className="w-full md:w-4/5 lg:w-2/4 md:mx-auto bg-gray-50 px-4 py-8 sm:px-16 space-y-4 mt-3 md:mt-8 mb-8 rounded-2xl border border-gray-100 shadow-xl">
             <h1 className="text-2xl text-blue-800 font-bold mb-4">Tell us about your pet</h1>
 
-            <form onSubmit={handleSavePetButton} >
-                {/* Pet Photo */}
+            <form onSubmit={handleSavePetButton}>
+                {/* STARTS PET PHOTO */}
                 <label htmlFor="petPhoto" className="block text-xs text-gray-600 uppercase">Update Pet Photo</label>
                 <input id="petPhoto" type="file" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
-
-                {/* Pet Details */}
+                {/* ENDS PET PHOTO */}
+                {/* PET DETAILS */}
                 <h2 className="text-xl text-blue-800 font-bold">Pet details</h2>
                 <div className="space-y-4">
                     <div className="block text-xs text-gray-600 uppercase">Provide a description of your pet</div>
 
-                    {/* Name */}
+                    {/* STARTS PET NAME */}
                     <div>
-                        <label htmlFor="petName" className="block text-xs text-gray-600 uppercase">Name</label>
-                        <input value={petInfo.petName} onChange={handlePetInfoChange} id="petName" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                        <div className='flex'>
+                            <label htmlFor="name" className="block text-xs text-gray-600 uppercase">Name</label>
+                            {petInfo.name === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
+                        <input value={petInfo.name} onChange={handlePetInfoChange} id="name" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                     </div>
-
-                    {/* Weight (lbs) */}
+                    {/* ENDS PET NAME */}
+                    {/* STARTS WEIGHT */}
                     <div>
-                        <label htmlFor="petWeight" className="block text-xs text-gray-600 uppercase">Weight (lbs)</label>
-                        <input value={petInfo.petWeight} onChange={handlePetInfoChange} id="petWeight" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                        <div className='flex'>
+                            <label htmlFor="weight" className="block text-xs text-gray-600 uppercase">Weight (lbs)</label>
+                            {petInfo.weight === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
+                        <input value={petInfo.weight} onChange={handlePetInfoChange} id="weight" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                     </div>
-
-                    {/* in Years and Months */}
+                    {/* ENDS WEIGHT */}
+                    {/* STARTS BIRTHDATE IN YEARS AND MONTHS */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label htmlFor="petAgeYears" className="block text-xs text-gray-600 uppercase">Age (Yr.) Years</label>
-                            <input value={petInfo.petAgeYears} onChange={handlePetInfoChange} id="petAgeYears" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                            <div className='flex'>
+                                <label htmlFor="birthYear" className="block text-xs text-gray-600 uppercase">Age Years</label>
+                                {petInfo.birthYear === '' && (
+                                    <div className='ps-2 text-xs text-red-600 uppercase'>
+                                        Required
+                                    </div>
+                                )}
+                            </div>
+                            <input value={petInfo.birthYear} onChange={handlePetInfoChange} id="birthYear" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                         </div>
                         <div>
-                            <label htmlFor="petAgeMonths" className="block text-xs text-gray-600 uppercase">Age (Mo.) Months</label>
-                            <input value={petInfo.petAgeMonths} onChange={handlePetInfoChange} id="petAgeMonths" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                            <div className='flex'>
+                                <label htmlFor="birthMonth" className="block text-xs text-gray-600 uppercase">Age Months</label>
+                                {petInfo.birthMonth === '' && (
+                                    <div className='ps-2 text-xs text-red-600 uppercase'>
+                                        Required
+                                    </div>
+                                )}
+                            </div>
+                            <input value={petInfo.birthMonth} onChange={handlePetInfoChange} id="birthMonth" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                         </div>
                     </div>
-
-                    {/* Sex (Radio Buttons) */}
-                    <div className="flex space-x-4">
-                        {/* Male Radio Button */}
-                        <ConditionalRadioButton
-                            inputType={'text'}
-                            labelName={'male'}
-                            labelText={'Male'}
-                            condition={isMale}
-                            compareCondition={true}
-                            onClick={async () => handlePetSexChange('male')}
-                        />
-                        {/* Female Radio Button */}
-                        <ConditionalRadioButton
-                            inputType={'text'}
-                            labelName={'female'}
-                            labelText={'Female'}
-                            condition={isMale}
-                            compareCondition={false}
-                            onClick={async () => handlePetSexChange('female')}
-                        />
-                    </div>
-
-                    {/* Breed(s) */}
+                    {/* ENDS BIRTHDATE IN YEARS AND MONTHS */}
+                    {/* STARTS SEX */}
                     <div>
-                        <label htmlFor="petBreeds" className="block text-xs text-gray-600 uppercase">Breed(s)</label>
-                        <input value={petInfo.petBreeds} onChange={handlePetInfoChange} id="petBreeds" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
+                        <div className='flex' >
+                            <label htmlFor="sex" className="block text-xs text-gray-600 uppercase">Sex</label>
+                            {petInfo.sex === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex space-x-4">
+                            {/* Male Radio Button */}
+                            <ConditionalRadioButton
+                                inputType={'text'}
+                                labelName={'male'}
+                                labelText={'Male'}
+                                condition={isMale}
+                                compareCondition={true}
+                                onClick={async () => handlePetSexChange('male')}
+                            />
+                            {/* Female Radio Button */}
+                            <ConditionalRadioButton
+                                inputType={'text'}
+                                labelName={'female'}
+                                labelText={'Female'}
+                                condition={isMale}
+                                compareCondition={false}
+                                onClick={async () => handlePetSexChange('female')}
+                            />
+                        </div>
+                        
+                    </div>
+                    {/* ENDS SEX */}
+                    {/* STARTS BREED INPUT FIELD */}
+                    <div>
+                        <div className='flex'>
+                            <label htmlFor="breed" className="block text-xs text-gray-600 uppercase">Breed(s)</label>
+                            {petInfo.breed === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
+                        <input value={petInfo.breed} onChange={handlePetInfoChange} id="breed" type="text" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm" />
                         <p className="text-xs text-gray-600">Enter all breeds that apply. If your dog is a mixed breed, add ‘Mixed’ as well.</p>
                     </div>
-
+                    {/* ENDS BREED INPUT FIELD */}
                     <h2 className="text-xl text-blue-800 font-bold">Additional details</h2>
-                    {/* Microchipped? */}
+                    {/* STARTS MICROCHIPPED */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Microchipped?</label>
+                        <div className='flex'>
+                            <label className="block text-xs text-gray-600 uppercase">Microchipped?</label>
+                            {petInfo.microchipped === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="flex space-x-4">
                             <ConditionalRadioButton
                                 inputType={'radio'}
@@ -255,10 +449,17 @@ const PetForm = () => {
                             />
                         </div>
                     </div>
-
-                    {/* Spayed/Neutered? */}
+                    {/* ENDS MICROCHIPPED */}
+                    {/* STARTS SPAYED/NEUTERED */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Spayed/Neutered?</label>
+                        <div className='flex'>
+                            <label className="block text-xs text-gray-600 uppercase">Spayed/Neutered?</label>
+                            {petInfo.spayed === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="flex space-x-4">
                             <ConditionalRadioButton
                                 inputType={'radio'}
@@ -278,10 +479,17 @@ const PetForm = () => {
                             />
                         </div>
                     </div>
-
-                    {/* House trained? */}
+                    {/* ENDS SPAYED/NEUTERED */}
+                    {/* STARTS HOUSE TRAINED */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">House trained?</label>
+                        <div className='flex'>
+                            <label className="block text-xs text-gray-600 uppercase">House trained?</label>
+                            {petInfo.houseTrained === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="flex space-x-4">
                             <ConditionalRadioButton
                                 inputType={'radio'}
@@ -301,10 +509,17 @@ const PetForm = () => {
                             />
                         </div>
                     </div>
-
-                    {/* Friendly with children? */}
+                    {/* ENDS HOUSE TRAINED */}
+                    {/* STARTS CHILD FRIENDLY */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Friendly with children?</label>
+                        <div className='flex'>
+                            <label className="block text-xs text-gray-600 uppercase">Friendly with children?</label>
+                            {petInfo.childFriendly === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="flex space-x-4">
                             <ConditionalRadioButton
                                 inputType={'radio'}
@@ -324,10 +539,17 @@ const PetForm = () => {
                             />
                         </div>
                     </div>
-
-                    {/* Friendly with dogs? */}
+                    {/* ENDS CHILD FRIENDLY */}
+                    {/* STARTS DOG FRIENDLY */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Friendly with dogs?</label>
+                        <div className='flex'>
+                            <label className="block text-xs text-gray-600 uppercase">Friendly with dogs?</label>
+                            {petInfo.dogFriendly === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="flex space-x-4">
                             <ConditionalRadioButton
                                 inputType={'radio'}
@@ -347,10 +569,17 @@ const PetForm = () => {
                             />
                         </div>
                     </div>
-
-                    {/* Friendly with cats? */}
+                    {/* ENDS DOG FRIENDLY */}
+                    {/* CAT FRIENDLY */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Friendly with cats?</label>
+                        <div className='flex'>
+                            <label className="block text-xs text-gray-600 uppercase">Friendly with cats?</label>
+                            {petInfo.catFriendly === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="flex space-x-4">
                             <ConditionalRadioButton
                                 inputType={'radio'}
@@ -370,24 +599,32 @@ const PetForm = () => {
                             />
                         </div>
                     </div>
-
-                    {/* Adoption date */}
+                    {/* ENDS CAT FRIENDLY */}
+                    {/* STARTS ADOPTION DATE */}
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">Adoption date</label>
                         <input defaultValue={formattedDate} onChange={handlePetInfoChange} id="adoptionDate" type="date" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm sm:text-sm" />
                     </div>
-
-                    {/* About your pet */}
+                    {/* ENDS ADOPTION DATE */}
+                    {/* STARTS ABOUT PET TEXT AREA */}
                     <div>
                         <label className="block text-xs text-gray-600 uppercase">About your pet</label>
                         <textarea value={petInfo.aboutPet} onChange={handlePetInfoChange} id="aboutPet" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
-
+                    {/* ENDS ABOUT PET TEXT AREA */}
                     <h2 className="text-xl text-blue-800 font-bold">Care Info</h2>
-                    {/* Potty break schedule */}
+                    {/* POTTY BREAK SCHEDULE */}
                     <div>
-                        <div className="block text-xs text-gray-600 uppercase">Potty break schedule</div>
+                        <div className='flex'>
+                            <div className="block text-xs text-gray-600 uppercase">Potty break schedule</div>
+                            {petInfo.pottyBreakSchedule === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="grid grid-cols-2 gap-2">
+                            {/* STARTS EVERY HOUR POTTY BREAK */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -398,7 +635,8 @@ const PetForm = () => {
                                     onClick={async () => handlePottyBreakScheduleChange(1)}
                                 />
                             </div>
-
+                            {/* ENDS EVERY HOUR POTTY BREAK */}
+                            {/* STARTS EVERY 2 HOUR POTTY BREAK */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -409,7 +647,8 @@ const PetForm = () => {
                                     onClick={async () => handlePottyBreakScheduleChange(2)}
                                 />
                             </div>
-
+                            {/* ENDS EVERY 2 HOUR POTTY BREAK */}
+                            {/* STARTS 4 HOURS POTTY BREAK */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -420,7 +659,8 @@ const PetForm = () => {
                                     onClick={async () => handlePottyBreakScheduleChange(4)}
                                 />
                             </div>
-
+                            {/* ENDS EVERY 4 HOURS POTTY BREAK */}
+                            {/* STARTS EVERY 8 HOUR POTTY BREAK */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -431,7 +671,8 @@ const PetForm = () => {
                                     onClick={async () => handlePottyBreakScheduleChange(8)}
                                 />
                             </div>
-
+                            {/* ENDS EVERY 8 HOUR POTTY BREAK*/}
+                            {/* STARTS CUSTOM POTTY BREAK SCHEDULE */}
                             <div className="col-span-2 md:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -442,6 +683,7 @@ const PetForm = () => {
                                     onClick={async () => handlePottyBreakScheduleChange(0)}
                                 />
                             </div>
+                            {/* ENDS CUSTOM POTTY BREAK SCHEDULE */}
                         </div>
                         {pottyBreakSchedule === 0 && (
                             <textarea
@@ -452,11 +694,18 @@ const PetForm = () => {
                             />
                         )}
                     </div>
-
-                    {/* Energy Level */}
+                    {/* ENERGY LEVEL */}
                     <div>
-                        <div className="block text-xs text-gray-600 uppercase">Energy Level</div>
+                        <div className='flex'>
+                            <div className="block text-xs text-gray-600 uppercase">Energy Level</div>
+                            {petInfo.energyLevel === null && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="grid grid-cols-2 gap-2">
+                            {/* STARTS HIGH ENERGY */}
                             <ConditionalRadioButton
                                 inputType={'radio'}
                                 labelName={'high'}
@@ -465,6 +714,8 @@ const PetForm = () => {
                                 compareCondition={3}
                                 onClick={async () => handleEnergyLevelChange(3)}
                             />
+                            {/* ENDS HIGH ENERGY */}
+                            {/* STARTS MODERATE ENERGY */}
                             <ConditionalRadioButton
                                 inputType={'radio'}
                                 labelName={'moderate'}
@@ -473,6 +724,8 @@ const PetForm = () => {
                                 compareCondition={2}
                                 onClick={async () => handleEnergyLevelChange(2)}
                             />
+                            {/* ENDS MODERATE ENERGY */}
+                            {/* STARTS LOW ENERGY */}
                             <ConditionalRadioButton
                                 inputType={'radio'}
                                 labelName={'low'}
@@ -481,31 +734,41 @@ const PetForm = () => {
                                 compareCondition={1}
                                 onClick={async () => handleEnergyLevelChange(1)}
                             />
+                            {/* ENDS LOW ENERGY */}
                         </div>
                     </div>
-
-                    {/* Feeding schedule */}
+                    {/* FEEDING SCHEDULE */}
                     <div>
-                        <div className="block text-xs text-gray-600 uppercase">Feeding schedule</div>
+                        <div className='flex'>
+                            <div className="block text-xs text-gray-600 uppercase">Feeding schedule</div>
+                            {petInfo.feedingSchedule === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="grid grid-cols-2 gap-2">
+                            {/* STARTS MORNING FEED TIME */}
                             <ConditionalRadioButton
                                 inputType={'radio'}
                                 labelName={'morning'}
                                 labelText={'Morning'}
                                 condition={feedingSchedule}
-                                compareCondition={2}
-                                onClick={async () => handleFeedingScheduleChange(2)}
+                                compareCondition={1}
+                                onClick={async () => handleFeedingScheduleChange(1)}
                             />
-                                
+                            {/* ENDS MORNING FEED TIME */}
+                            {/* STARTS TWICE A DAY FEED TIME */}
                             <ConditionalRadioButton
                                 inputType={'radio'}
                                 labelName={'twiceADay'}
                                 labelText={'Twice a day'}
                                 condition={feedingSchedule}
-                                compareCondition={1}
-                                onClick={async () => handleFeedingScheduleChange(1)}
+                                compareCondition={2}
+                                onClick={async () => handleFeedingScheduleChange(2)}
                             />
-                                
+                            {/* ENDS TWICE A DAY FEED TIME */}
+                            {/* STARTS CUSTOM FEEDING TIME */}
                             <ConditionalRadioButton
                                 inputType={'radio'}
                                 labelName={'customFeeding'}
@@ -514,6 +777,7 @@ const PetForm = () => {
                                 compareCondition={0}
                                 onClick={async () => handleFeedingScheduleChange(0)}
                             />
+                            {/* ENDS CUSTOM FEEDING TIME */}
                         </div>
                         <div>
                             {feedingSchedule === 0 && (
@@ -526,22 +790,30 @@ const PetForm = () => {
                             )}
                         </div>
                     </div>
-
-                    {/* Can be left alone */}
+                    {/* ALONE TIME */}
                     <div>
-                        <div className="block text-xs text-gray-600 uppercase">Can be left alone</div>
+                        <div className='flex'>
+                            <div className="block text-xs text-gray-600 uppercase">Can be left alone</div>
+                            {petInfo.aloneTime === '' && (
+                                <div className='ps-2 text-xs text-red-600 uppercase'>
+                                    Required
+                                </div>
+                            )}
+                        </div>
                         <div className="grid grid-cols-2 gap-2">
+                            {/* STARTS LESS THAN 1 HOUR ALONE TIME */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
                                     labelName={'lessThan1'}
-                                    labelText={`< 1 hour`}
+                                    labelText={`< 1 Hour`}
                                     condition={aloneTime}
                                     compareCondition={1}
                                     onClick={async () => handleAloneTimeChange(1)}
                                 />
                             </div>
-
+                            {/* ENDS LESS THAN 1 HOUR ALONE TIME */}
+                            {/* STARTS 1-4 HOUR ALONE TIME */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -552,7 +824,8 @@ const PetForm = () => {
                                     onClick={async () => handleAloneTimeChange(4)}
                                 />
                             </div>
-
+                            {/* ENDS 1-4 HOUR ALONE TIME */}
+                            {/* STARTS 4-8 HOUR ALONE TIME */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -563,7 +836,8 @@ const PetForm = () => {
                                     onClick={async () => handleAloneTimeChange(8)}
                                 />
                             </div>
-
+                            {/* ENDS 4-8 HOUR ALONE TIME */}
+                            {/* STARTS CUSTOM ALONE TIME RADIO BUTTON */}
                             <div className="col-span-1 md:col-span-2 lg:col-span-1">
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -574,6 +848,7 @@ const PetForm = () => {
                                     onClick={async () => handleAloneTimeChange(0)}
                                 />
                             </div>
+                            {/* ENDS CUSTOM ALONE TIME RADIO BUTTON */}
                         </div>
                         {aloneTime === 0 && (
                             <textarea
@@ -584,12 +859,11 @@ const PetForm = () => {
                             />
                         )}
                     </div>
-
-                    {/* Medication */}
+                    {/* MEDICATION */}
                     <div>
                         <div className="block text-xs text-gray-600 uppercase">Medication (select all that apply)</div>
                         <div className="grid grid-cols-2 gap-2">
-
+                            {/* STARTS MED PILL RADIO BUTTON */}
                             <div className='col-span-1 md:col-span-2 lg:col-span-1'>
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -600,7 +874,8 @@ const PetForm = () => {
                                     onClick={async () => setIsMedPill(!isMedPill)}
                                 />
                             </div>
-
+                            {/* ENDS MED PILL RADIO BUTTON */}
+                            {/* STARTS MED TOPICAL RADIO BUTTON */}
                             <div className='col-span-1 md:col-span-2 lg:col-span-1'>
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -611,7 +886,8 @@ const PetForm = () => {
                                     onClick={async () => setIsMedTopical(!isMedTopical)}
                                 />
                             </div>
-
+                            {/* ENDS MED TOPICAL RADIO BUTTON */}
+                            {/* STARTS MED INJECTION RADIO BUTTON */}
                             <div className='col-span-1 md:col-span-2 lg:col-span-1'>
                                 <ConditionalRadioButton
                                     inputType={'radio'}
@@ -622,59 +898,65 @@ const PetForm = () => {
                                     onClick={async () => setIsMedInjection(!isMedInjection)}
                                 />
                             </div>
+                            {/* ENDS MED INJECTION RADIO BUTTON */}
                         </div>
                     </div>
-
-                    {/* Anything else a sitter should know? */}
+                    {/* STARTS ADDITIONAL HEALTH INFO */}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Anything else a sitter should know?</label>
-                        <textarea id="additionalInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
+                        <label htmlFor='additionalInfo' className="block text-xs text-gray-600 uppercase">Anything else a sitter should know?</label>
+                        <textarea onChange={handleAdditionalInfo} id="additionalInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
-
-                    {/* Add details about your pets health and care providers */}
+                    {/* ENDS ADDITIONAL HEALTH INFO */}
+                    {/* STARTS HEALTH INFO TEXT AREA*/}
                     <div>
-                        <label className="block text-xs text-gray-600 uppercase">Add details about your pet&apos;s health and care providers</label>
-                        <textarea id="healthInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
+                        <label htmlFor='healthInfo' className="block text-xs text-gray-600 uppercase">Add details about your pet&apos;s health and care providers</label>
+                        <textarea onChange={handleHealthInfo} id="healthInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
-
+                    {/* ENDS HEALTH INFO TEXT AREA */}
                     <h2 className="text-xl text-blue-800 font-bold">Health Info</h2>
-                    {/* Veterinary info */}
+                    {/* VET INFO */}
                     <div>
                         <div className='grid grid-cols-2 gap-4'>
+                            {/* STARTS VET NAME */}
                             <div>
                                 <label className="block text-xs text-gray-600 uppercase">Veterinary Name</label>
                                 <input
                                     id="vetName"
                                     type="text"
-                                    value={vetInfo.vetName}
-                                    onChange={handleVetInfoChange}
+                                    value={petInfo.vetName}
+                                    onChange={handlePetInfoChange}
                                     className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                     placeholder=""
                                 />
                             </div>
+                            {/* ENDS VET NAME */}
+                            {/* STARTS VET PHONE NUMBER */}
                             <div>
                                 <label className="block text-xs text-gray-600 uppercase">Veterinary Phone</label>
                                 <input
                                     id="vetPhone"
                                     type="tel"
-                                    value={vetInfo.vetPhone}
-                                    onChange={handleVetInfoChange}
+                                    value={petInfo.vetPhone}
+                                    onChange={handlePetInfoChange}
                                     className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                     placeholder=""
                                 />
                             </div>
                         </div>
+                        {/* ENDS VET PHONE NUMBER */}
+                        {/* STARTS VET ADDRESS */}
                         <div>
                             <label className="block text-xs text-gray-600 uppercase mt-5">Veterinary Address</label>
                             <input
                                 id="vetAddress"
                                 type="text"
-                                value={vetInfo.vetAddress}
-                                onChange={handleVetInfoChange}
+                                value={petInfo.vetAddress}
+                                onChange={handlePetInfoChange}
                                 className="w-full my-2 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                 placeholder=""
                             />
                         </div>
+                        {/* ENDS VET ADDRESS */}
                     </div>
                 </div>
                 <button
@@ -695,12 +977,12 @@ const PetForm = () => {
         </div>
     );
 };
-
+// Helper function for the radio buttons
 type TRadioButton = {
     inputType: string,
     labelName: string,
     labelText: string,
-    condition: boolean | number,
+    condition: boolean | number | null,
     compareCondition: boolean | number,
     onClick: () => {},
 }
