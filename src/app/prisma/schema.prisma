@@ -36,7 +36,7 @@ model User {
 model Dog {
   id                 Int          @id @default(autoincrement())
   name               String
-  userId             Int          @unique
+  userId             Int          
   user               User         @relation(fields: [userId], references: [id])
   history            DogHistory[]
   photo              String?
