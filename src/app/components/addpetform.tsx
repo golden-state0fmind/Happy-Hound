@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import LoadingDots from './loading-dots';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers';
+import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
 
 type AddPetProps = {
     name: string,                       
@@ -29,12 +31,13 @@ type AddPetProps = {
     additionalInfo: string,             
     healthInfo: string,                 
     vetName: string,                    
-    vetPhone: string,                   
+    vetPhone: null | number,                   
     vetAddress: string
 }
 
 const PetForm = () => {
     const user = useSelector((state: RootState) => state.user);
+    const [emptyFields, setEmptyFields] = useState<string[]>([]);
     const [aloneTime, setAloneTime] = useState<number | null>(null);
     const [energyLevel, setEnergyLevel] = useState<number | null>(null);
     const [isMale, setIsMale] = useState<boolean | null>(null);
@@ -54,6 +57,7 @@ const PetForm = () => {
     const [isMedTopical, setIsMedTopical] = useState<boolean>(false);
     const [isMedInjection, setIsMedInjection] = useState<boolean>(false);
 
+    const router = useRouter();
     const today = new Date();
     const day = today.getDate().toString().padStart(2, '0'); // Get the day (1-31) and pad with zero if needed
     const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Get the month (0-11); +1 to make it 1-12 and pad with zero if needed
@@ -82,14 +86,14 @@ const PetForm = () => {
         adoptionDate: formattedDate,    // TEXT NOT NULL
         aboutPet: '',                   // TEXT NOT NULL
         pottyBreakSchedule: '',         // TEXT NOT NULL
-        energyLevel: null,                 // INTEGER NOT NULL
+        energyLevel: null,              // INTEGER NOT NULL
         feedingSchedule: '',            // TEXT NOT NULL
         aloneTime: '',                  // TEXT NOT NULL
         medication: '',                 // TEXT NOT NULL
         additionalInfo: '',             // TEXT
         healthInfo: '',                 // TEXT
         vetName: '',                    // TEXT
-        vetPhone: '',                   // INTEGER
+        vetPhone: null,                   // INTEGER
         vetAddress: ''                  // TEXT
     });
 
@@ -162,7 +166,17 @@ const PetForm = () => {
 
     const handlePetInfoChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = event.target;
-        setPetInfo({ ...petInfo, [id]: value });
+        if (id === 'vetPhone') {
+            // Remove any non-numeric characters
+            const removeNonNumerics = value.replace(/[^\d-]/g, '');
+            // Convert the string to a number if it's not empty
+            const vetPhoneValue = removeNonNumerics === '' ? null : +removeNonNumerics;
+            // Set the state with the corrected vetPhone value
+            setPetInfo({ ...petInfo, [id]: vetPhoneValue });
+        } else {
+            // For other fields, set the state directly
+            setPetInfo({ ...petInfo, [id]: value });
+        }
     };
 
     const handlePottyBreakScheduleChange = (value: number) => {
@@ -251,8 +265,7 @@ const PetForm = () => {
     useEffect(() => {
         checkForMedication();
     }, [isMedPill, isMedTopical, isMedInjection]);
-
-    const [emptyFields, setEmptyFields] = useState<string[]>([]);
+    
     function findNullFields(data: any) {
         const notNullFieldsArray = [
             'name',
@@ -269,12 +282,10 @@ const PetForm = () => {
             'dogFriendly',
             'catFriendly',
             'adoptionDate',
-            //'aboutPet',
             'pottyBreakSchedule',
             'energyLevel',
             'feedingSchedule',
             'aloneTime',
-            //'medication',
         ];
         // New array for updated state
         const newEmptyFields: string[] = [];
@@ -294,18 +305,59 @@ const PetForm = () => {
             // All required fields are filled
             // Proceed with form submission or other actions
             setLoading(true);
-        }
-    }
+            fetch("/api/addpet", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: petInfo.name,
+                    userId: petInfo.userId,
+                    photo: petInfo.photo,
+                    weight: petInfo.weight,
+                    birthMonth: petInfo.birthMonth,
+                    birthYear: petInfo.birthYear,
+                    sex: petInfo.sex,
+                    breed: petInfo.breed,
+                    microchipped: petInfo.microchipped,
+                    spayed: petInfo.spayed,
+                    houseTrained: petInfo.houseTrained,
+                    childFriendly: petInfo.childFriendly,
+                    dogFriendly: petInfo.dogFriendly,
+                    catFriendly: petInfo.catFriendly,
+                    adoptionDate: petInfo.adoptionDate,
+                    aboutPet: petInfo.aboutPet,
+                    pottyBreakSchedule: petInfo.pottyBreakSchedule,
+                    energyLevel: petInfo.energyLevel,
+                    feedingSchedule: petInfo.feedingSchedule,
+                    aloneTime: petInfo.aloneTime,
+                    medication: petInfo.medication,
+                    additionalInfo: petInfo.additionalInfo,
+                    healthInfo: petInfo.healthInfo,
+                    vetName: petInfo.vetName,
+                    vetPhone: petInfo.vetPhone,
+                    vetAddress: petInfo.vetAddress
+                }),
+            }).then(async (res) => {
+                setLoading(false);
+                if (res.status === 200) {
+                    toast.success(`${petInfo.name} is Added! Redirecting to profile...`);
+                    setTimeout(() => {
+                        router.push("/profile");
+                    }, 1000);
+                } else {
+                    const { error } = await res.json();
+                    toast.error(error);
+                }
+            });
+        };
+    };
     
     const handleSavePetButton = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         findNullFields(petInfo);
-        if (loading) {
-            console.log(petInfo)
-        }
-        console.log(loading, '=====save pet loading')
     };
-
+    
     return (
         <div className="w-full md:w-4/5 lg:w-2/4 md:mx-auto bg-gray-50 px-4 py-8 sm:px-16 space-y-4 mt-3 md:mt-8 mb-8 rounded-2xl border border-gray-100 shadow-xl">
             <h1 className="text-2xl text-blue-800 font-bold mb-4">Tell us about your pet</h1>
@@ -936,7 +988,10 @@ const PetForm = () => {
                                 <input
                                     id="vetPhone"
                                     type="tel"
-                                    value={petInfo.vetPhone}
+                                    pattern="\d*"
+                                    inputMode="numeric"
+                                    maxLength={10}
+                                    value={petInfo.vetPhone === null ? '' : petInfo.vetPhone}
                                     onChange={handlePetInfoChange}
                                     className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                                     placeholder=""
