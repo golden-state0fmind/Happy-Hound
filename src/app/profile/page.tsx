@@ -3,7 +3,7 @@ import Link from "next/link";
 import WelcomeUser from "../components/welcomeUser";
 import ReduxProvider from "../components/WithReduxProvider";
 
-export default async function Home() {
+export default function Home() {
 
     return (
         <ReduxProvider>
