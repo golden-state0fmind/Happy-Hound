@@ -2,25 +2,9 @@
 import Link from "next/link";
 import WelcomeUser from "../components/welcomeUser";
 import ReduxProvider from "../components/WithReduxProvider";
-import { useEffect, useState } from "react";
-import { fetchDog } from "../reducers/dogReducer";
+import UserDogList from "../components/userDogList";
 
 export default function Home() {
-    const [dogList, setDogList] = useState([]);
-
-    useEffect(() => {
-        fetchDog()
-            .then((res) => {
-                let userDog = res.data;
-                setDogList(userDog);
-            })
-            .catch((error) => {
-                // Handle error if needed
-                console.error("Error:", error);
-            });
-    }, []);
-    console.log(dogList)
-
     return (
         <ReduxProvider>
             <div className="flex bg-white">
@@ -53,6 +37,7 @@ export default function Home() {
                             <div className="bg-gray-100 rounded-lg shadow-md px-4 py-8 h-full w-full">
                                 {/* Placeholder content */}
                                 <h2 className='text-base md:text-lg lg:text-xl font-semibold text-blue-800' >Your Pets</h2>
+                                <UserDogList />
                                 <p className='text-base md:text-lg lg:text-xl font-semibold text-blue-800' >Add your pets or edit their info</p>
                                 <div className="mt-5 border-dotted border-2 border-gray-400 p-4 md:p-8 lg:p-12 h-80 flex flex-col justify-center items-center">
                                     <Link href='/addpet'>
