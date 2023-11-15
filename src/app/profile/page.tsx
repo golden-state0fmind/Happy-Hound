@@ -2,8 +2,24 @@
 import Link from "next/link";
 import WelcomeUser from "../components/welcomeUser";
 import ReduxProvider from "../components/WithReduxProvider";
+import { useEffect, useState } from "react";
+import { fetchDog } from "../reducers/dogReducer";
 
 export default function Home() {
+    const [dogList, setDogList] = useState([]);
+
+    useEffect(() => {
+        fetchDog()
+            .then((res) => {
+                let userDog = res.data;
+                setDogList(userDog);
+            })
+            .catch((error) => {
+                // Handle error if needed
+                console.error("Error:", error);
+            });
+    }, []);
+    console.log(dogList)
 
     return (
         <ReduxProvider>
