@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { JSX, ReactNode } from "react";
 
-type DogState = {
-    id: number | null,
+export type DogState = {
+    map(arg0: (dog: any, index: any) => import("react").JSX.Element): import("react").ReactNode;
+    id: number,
     userId: number | null,
     name: string | null,
     aboutPet: string | null,
@@ -31,7 +33,7 @@ type DogState = {
 }
 
 const initialState: DogState = {
-    id: null,
+    id: 0,
     userId: null,
     name: null,
     aboutPet: null,
@@ -57,7 +59,10 @@ const initialState: DogState = {
     vetAddress: null,
     vetName: null,
     vetPhone: null,
-    weight: null
+    weight: null,
+    map: function (arg0: (dog: any, index: any) => JSX.Element): ReactNode {
+        throw new Error("Function not implemented.");
+    }
 };
 
 export const fetchDog = async () => {
