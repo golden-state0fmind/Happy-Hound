@@ -22,11 +22,13 @@ export default function UserDogList() {
     
     return (
         <ul>
-            {dogList[0].map((dog, index) => (
-                <li key={index}>{
-                    ((dog as DogState).name)
-                }</li>
-            ))}
+            {dogList && Array.isArray(dogList[0]) ? (
+                dogList[0].map((dog, index) => (
+                    <li key={index}>{((dog as DogState).name)}</li>
+                ))
+            ) : (
+                <li>No dogs available</li>
+            )}
         </ul>
     );
 };
