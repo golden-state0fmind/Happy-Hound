@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { RootState } from "../reducers";
 import { DogState, fetchDog } from "../reducers/dogReducer";
 import { useDispatch, useSelector } from 'react-redux';
