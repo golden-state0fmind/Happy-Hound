@@ -14,9 +14,8 @@ const dogListSlice: Slice<DogListState> = createSlice({
     initialState,
     reducers: {
         addDogToList: (state, action: PayloadAction<DogState>) => {
-            // state.dogList.push(action.payload);
             const newDog = action.payload;
-            // Check if the dog with the same id already exists in the list
+            // // Check if the dog with the same id already exists in the list
             const existingDogIndex = state.dogList.findIndex(dog => dog.id === newDog.id);
             if (existingDogIndex === -1) {
                 // Dog with the same id doesn't exist, add it to the list
@@ -27,8 +26,13 @@ const dogListSlice: Slice<DogListState> = createSlice({
                 console.log(`Dog with id ${newDog.id} already exists in the list.`);
             }
         },
+        removeDogById: (state, action: PayloadAction<number>) => {
+            const dogIdToRemove = action.payload;
+            // Use filter to create a new array without the dog with the specified ID
+            state.dogList = state.dogList.filter(dog => dog.id !== dogIdToRemove);
+        },
     },
 });
 
-export const { addDogToList } = dogListSlice.actions;
+export const { addDogToList, removeDogById } = dogListSlice.actions;
 export default dogListSlice.reducer;
