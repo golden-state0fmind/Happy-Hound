@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { getServerSession } from "next-auth/next";
 
-export async function Patch(req: Request) {
+export async function Put(req: Request) {
     const { pathname } = new URL(req.url)
     const lastSlashIndex = pathname.lastIndexOf("/"); // Finds the index of the last occurence of "/"
     const sessionUser = await getServerSession();
