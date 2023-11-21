@@ -22,7 +22,7 @@ export default function UserDogList() {
                 // Handle error if needed
                 console.error("Error:", error);
             });
-        }, []);
+    }, []);
 
     const handleDeletePet = (id: number, name: string | null) => {
         fetch(`/api/deletepet/${id}`)
@@ -37,7 +37,7 @@ export default function UserDogList() {
                 console.error("Error:", error);
             });
     }
-    
+
     return (
         <ul>
             {dogList.length > 0 ? (
@@ -48,7 +48,7 @@ export default function UserDogList() {
                                 {(dog.name)}
                             </Link>
                             <div className='underline text-base md:text-lg lg:text-xl transition-all'>
-                                <Link className='hover:text-green-700 pe-5' href={""}>
+                                <Link className='hover:text-green-700 pe-5' href={`/editpetdetails/${dog.id}`}>
                                     Edit
                                 </Link>
                                 <span onClick={() => handleDeletePet(dog.id, dog.name)} className='underline text-base md:text-lg lg:text-xl transition-all hover:text-red-700 cursor-pointer' >

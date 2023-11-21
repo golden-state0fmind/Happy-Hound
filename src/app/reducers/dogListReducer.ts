@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { DogState } from './dogReducer';
 
 interface DogListState {
-    dogList: DogState[]; 
+    dogList: DogState[];
 }
 
 const initialState: DogListState = {
@@ -23,7 +23,7 @@ const dogListSlice: Slice<DogListState> = createSlice({
             } else {
                 // Dog with the same id already exists, you can update or handle it as needed
                 // For example, you might want to replace the existing one or ignore the new one
-                console.log(`Dog with id ${newDog.id} already exists in the list.`);
+                //console.log(`Dog with id ${newDog.id} already exists in the list.`);
             }
         },
         removeDogById: (state, action: PayloadAction<number>) => {
