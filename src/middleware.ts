@@ -29,7 +29,7 @@ export default async function middleware(req: NextRequest) {
     }
 
     const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    const whitelistedPrivateRoutes = ['/profile', '/addpet'];
+    const whitelistedPrivateRoutes = ['/profile', '/addpet', '/editpet/*'];
     if (!session && whitelistedPrivateRoutes.includes(path)) {
         return NextResponse.redirect(new URL('/login', req.url));
     } else if (session && whitelistedPrivateRoutes.includes(path)) {
