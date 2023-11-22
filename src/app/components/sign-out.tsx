@@ -3,8 +3,8 @@ import { signOut } from "next-auth/react";
 
 export default function SignOut() {
     const handleSignOut = () => {
-        signOut()
         sessionStorage.clear();
+        signOut();
     }
     return (
         <button
