@@ -344,7 +344,7 @@ const EditPetForm = () => {
             medicalTreatment.push('Medication Injection');
         }
         const medicationsAsString = medicalTreatment.join(', ');
-        console.log('pill', isMedPill, 'inj', isMedInjection, 'top', isMedTopical);
+
         setPetInfo(prevPetInfo => ({
             ...prevPetInfo,
             medication: medicationsAsString
