@@ -34,7 +34,7 @@ export default function UserDogList() {
             setLoading(true);
         }
     }, [dogList])
-
+    console.log(dogList)
     const handleDeletePet = (id: number, name: string | null) => {
         fetch(`/api/deletepet/${id}`)
             .then((res) => {

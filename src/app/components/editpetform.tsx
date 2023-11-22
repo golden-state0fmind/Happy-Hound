@@ -344,8 +344,7 @@ const EditPetForm = () => {
             medicalTreatment.push('Medication Injection');
         }
         const medicationsAsString = medicalTreatment.join(', ');
-        petInfo.medication = medicationsAsString;
-
+        console.log('pill', isMedPill, 'inj', isMedInjection, 'top', isMedTopical);
         setPetInfo(prevPetInfo => ({
             ...prevPetInfo,
             medication: medicationsAsString
@@ -353,16 +352,16 @@ const EditPetForm = () => {
     }
     // CHECKS ONE LONG STRING FOR KEYWORDS TO SET TRUE FOR SAID KEYWORDS
     const handleReceiveMedication = (value: string) => {
-        switch (true) {
-            case value.includes('Pill'):
-                setIsMedPill(true)
-            case value.includes('Topical'):
-                setIsMedTopical(true);
-            case value.includes('Injection'):
-                setIsMedInjection(true);
-            default:
-                break;
+        if (value.includes('Pill')) {
+            setIsMedPill(true);
         }
+        if (value.includes('Topical')) {
+            setIsMedTopical(true);
+        }
+        if (value.includes('Injection')) {
+            setIsMedInjection(true);
+        }
+
     }
     // HANDLES THE ONCHANGE EVENT FOR ADDING MORE INFO FOR THE SITTER
     const handleAdditionalInfo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
