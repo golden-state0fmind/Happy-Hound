@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Dog" ALTER COLUMN "vetPhone" SET DATA TYPE TEXT;
