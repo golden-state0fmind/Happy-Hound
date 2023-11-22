@@ -86,9 +86,9 @@ model Profile {
   country       String?
   photo         String?
   age           String?
-  phone         Int?
+  phone         String?
   eContactName  String?
-  eContactPhone Int?
+  eContactPhone String?
 }
 
 model Payment {
