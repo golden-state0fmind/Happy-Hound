@@ -7,31 +7,31 @@ import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 
 type AddPetProps = {
-    name: string,                       
-    userId: number | null,                
-    photo: string,                      
-    weight: string,                     
-    birthMonth: string,                
-    birthYear: string,                  
-    sex: string,                        
-    breed: string,                      
-    microchipped: null | boolean,   
-    spayed: null | boolean,               
-    houseTrained: null | boolean,   
-    childFriendly: null | boolean, 
-    dogFriendly: null | boolean,     
-    catFriendly: null | boolean,     
-    adoptionDate: null | string,    
-    aboutPet: string,                   
-    pottyBreakSchedule: string,         
-    energyLevel: number | null,                 
-    feedingSchedule: string,            
-    aloneTime: string,                  
-    medication: string,                 
-    additionalInfo: string,             
-    healthInfo: string,                 
-    vetName: string,                    
-    vetPhone: null | number,                   
+    name: string,
+    userId: number | null,
+    photo: string,
+    weight: string,
+    birthMonth: string,
+    birthYear: string,
+    sex: string,
+    breed: string,
+    microchipped: null | boolean,
+    spayed: null | boolean,
+    houseTrained: null | boolean,
+    childFriendly: null | boolean,
+    dogFriendly: null | boolean,
+    catFriendly: null | boolean,
+    adoptionDate: null | string,
+    aboutPet: string,
+    pottyBreakSchedule: string,
+    energyLevel: number | null,
+    feedingSchedule: string,
+    aloneTime: string,
+    medication: string,
+    additionalInfo: string,
+    healthInfo: string,
+    vetName: string,
+    vetPhone: null | string,
     vetAddress: string
 }
 
@@ -170,7 +170,7 @@ const PetForm = () => {
             // Remove any non-numeric characters
             const removeNonNumerics = value.replace(/[^\d-]/g, '');
             // Convert the string to a number if it's not empty
-            const vetPhoneValue = removeNonNumerics === '' ? null : +removeNonNumerics;
+            const vetPhoneValue = removeNonNumerics === '' ? null : removeNonNumerics;
             // Set the state with the corrected vetPhone value
             setPetInfo({ ...petInfo, [id]: vetPhoneValue });
         } else {
@@ -261,11 +261,11 @@ const PetForm = () => {
     const handleHealthInfo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         petInfo.healthInfo = event.target.value;
     }
-    
+
     useEffect(() => {
         checkForMedication();
     }, [isMedPill, isMedTopical, isMedInjection]);
-    
+
     function findNullFields(data: any) {
         const notNullFieldsArray = [
             'name',
@@ -352,12 +352,12 @@ const PetForm = () => {
             });
         };
     };
-    
+
     const handleSavePetButton = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         findNullFields(petInfo);
     };
-    
+
     return (
         <div className="w-full md:w-4/5 lg:w-2/4 md:mx-auto bg-gray-50 px-4 py-8 sm:px-16 space-y-4 mt-3 md:mt-8 mb-8 rounded-2xl border border-gray-100 shadow-xl">
             <h1 className="text-2xl text-blue-800 font-bold mb-4">Tell us about your pet</h1>
@@ -454,7 +454,7 @@ const PetForm = () => {
                                 onClick={async () => handlePetSexChange('female')}
                             />
                         </div>
-                        
+
                     </div>
                     {/* ENDS SEX */}
                     {/* STARTS BREED INPUT FIELD */}
