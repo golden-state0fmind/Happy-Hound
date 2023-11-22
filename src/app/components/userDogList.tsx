@@ -11,7 +11,7 @@ export default function UserDogList() {
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const dogList = useSelector((state: RootState) => state.dogList.dogList);
-
+    // USED FOR GETTING PET DATA TO DISPLAY
     useEffect(() => {
         fetchDog()
             .then((res: { data: DogState[] }) => {
@@ -26,7 +26,7 @@ export default function UserDogList() {
                 setLoading(true);
             });
     }, []);
-
+    // LOADING STATE WHILE DOGLIST IS 0
     useEffect(() => {
         if (dogList.length > 0) {
             setLoading(false);
@@ -34,7 +34,7 @@ export default function UserDogList() {
             setLoading(true);
         }
     }, [dogList])
-    console.log(dogList)
+    // HANDLES DELETE A PET BY ID NUMBER
     const handleDeletePet = (id: number, name: string | null) => {
         fetch(`/api/deletepet/${id}`)
             .then((res) => {
