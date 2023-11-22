@@ -3,8 +3,8 @@ import LoadingDots from "./loading-dots";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { RootState } from "../reducers";
-import { useSelector } from "react-redux";
-import { DogState } from "../reducers/dogReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { EditDogById } from "../reducers/dogListReducer";
 
 type EditPetProps = {
     name: string,
@@ -31,11 +31,12 @@ type EditPetProps = {
     additionalInfo: string,
     healthInfo: string,
     vetName: string,
-    vetPhone: null | number,
+    vetPhone: null | string,
     vetAddress: string
 }
 
 const EditPetForm = () => {
+    const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const [emptyFields, setEmptyFields] = useState<string[]>([]);
     const [aloneTime, setAloneTime] = useState<number | null>(null);
@@ -109,7 +110,6 @@ const EditPetForm = () => {
 
         if (fetchDog) {
             const editPet: any = fetchDog[0];
-            console.log(editPet)
             setPetInfo(editPet);
             handlePetSexChange(editPet.sex);
             handleIsMicrochipped(editPet.microchipped);
@@ -118,19 +118,21 @@ const EditPetForm = () => {
             handleIsChildFriendly(editPet.childFriendly);
             handleIsDogFriendly(editPet.dogFriendly);
             handleIsCatFriendly(editPet.catFriendly);
-            handlePottyBreakScheduleChange(editPet.pottyBreakSchedule);
+            handleReceivePottyBreakScheduleChange(editPet.pottyBreakSchedule);
+            handleReceiveFeedingSchedule(editPet.feedingSchedule);
             handleEnergyLevelChange(editPet.energyLevel);
-            handleFeedingScheduleChange(editPet.feedingSchedule);
-            handleAloneTimeChange(editPet.aloneTime)
+            handleReceiveAloneTimeChange(editPet.aloneTime);
+            handleReceiveMedication(editPet.medication);
+            handleReceiveAdditionalInfo(editPet.additionalInfo);
+            handleReceiveHealthInfo(editPet.healthInfo);
 
         }
     }
-
-
+    // Finds the filtered petId to iterate over later
     useEffect(() => {
         findDogId(Number(petId));
     }, [])
-
+    // HANDLES SEX
     const handlePetSexChange = (value: string) => {
         if (value === 'male') {
             setIsMale(true);
@@ -140,7 +142,7 @@ const EditPetForm = () => {
             petInfo.sex = value
         }
     };
-
+    // HANDLES MICROCHIPPED RADIO BUTTON
     const handleIsMicrochipped = (value: string | boolean) => {
         if (value === 'Yes' || value === true) {
             setIsMicrochipped(true);
@@ -150,7 +152,7 @@ const EditPetForm = () => {
             petInfo.microchipped = false;
         }
     };
-
+    // HANDLES SPAYED BUTTON
     const handleIsSpayed = (value: string | boolean) => {
         if (value === 'Yes' || value === true) {
             setIsSpayed(true);
@@ -160,7 +162,7 @@ const EditPetForm = () => {
             petInfo.spayed = false;
         }
     };
-
+    // HANDLES HOUSE TRAINED BOOLEAN
     const handleIsHouseTrained = (value: string | boolean) => {
         if (value === 'Yes' || value === true) {
             setIsHouseTrained(true);
@@ -170,6 +172,7 @@ const EditPetForm = () => {
             petInfo.houseTrained = false;
         }
     };
+    // HANDLES CHILD FRIENDL BOOLEAN
     const handleIsChildFriendly = (value: string | boolean) => {
         if (value === 'Yes' || value === true) {
             setIsChildFriendly(true);
@@ -179,6 +182,7 @@ const EditPetForm = () => {
             petInfo.childFriendly = false;
         }
     };
+    // HANDLES DOG FRIENDLY BOOLEAN
     const handleIsDogFriendly = (value: string | boolean) => {
         if (value === 'Yes' || value === true) {
             setIsDogFriendly(true);
@@ -188,6 +192,7 @@ const EditPetForm = () => {
             petInfo.dogFriendly = false;
         }
     };
+    // HANDLES CAT FRIENDLY BOOLEAN
     const handleIsCatFriendly = (value: string | boolean) => {
         if (value === 'Yes' || value === true) {
             setIsCatFriendly(true);
@@ -197,14 +202,14 @@ const EditPetForm = () => {
             petInfo.catFriendly = false;
         }
     };
-
+    // HANDLES MOST OF THE PET INFO
     const handlePetInfoChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = event.target;
         if (id === 'vetPhone') {
             // Remove any non-numeric characters
             const removeNonNumerics = value.replace(/[^\d-]/g, '');
             // Convert the string to a number if it's not empty
-            const vetPhoneValue = removeNonNumerics === '' ? null : +removeNonNumerics;
+            const vetPhoneValue = removeNonNumerics === '' ? null : removeNonNumerics;
             // Set the state with the corrected vetPhone value
             setPetInfo({ ...petInfo, [id]: vetPhoneValue });
         } else {
@@ -212,7 +217,7 @@ const EditPetForm = () => {
             setPetInfo({ ...petInfo, [id]: value });
         }
     };
-
+    // HANDLES POTTY BREAK SCHEDULE IN NUMBER OF HOURS
     const handlePottyBreakScheduleChange = (value: number) => {
         setPottyBreakSchedule(value);
         if (value === 0) {
@@ -221,17 +226,52 @@ const EditPetForm = () => {
         }
         petInfo.pottyBreakSchedule = `Every ${value} Hours`;
     };
-
+    // INTERPRETES THE NUMBER OF HOURS FOR POTTY BREAKS
+    const handleReceivePottyBreakScheduleChange = (value: string) => {
+        switch (true) {
+            case value.includes('1'):
+                setPottyBreakSchedule(1);
+                break;
+            case value.includes('2'):
+                setPottyBreakSchedule(2);
+                break;
+            case value.includes('4'):
+                setPottyBreakSchedule(4);
+                break;
+            case value.includes('8'):
+                setPottyBreakSchedule(8);
+                break;
+            default:
+                break;
+        }
+    }
+    // CHECKS FOR FEEDING TIMES 
+    const handleReceiveFeedingSchedule = (value: string) => {
+        switch (true) {
+            case value.includes('Morning'):
+                setFeedingSchedule(1);
+                break;
+            case value.includes('Twice'):
+                setFeedingSchedule(2);
+                break;
+            case value.includes('Custom'):
+                setFeedingSchedule(0);
+                break;
+            default:
+                break;
+        }
+    }
+    // ONCHANGE EVENT FOR THE CUSTOM POTTY BREAKS
     const handlePottyBreakCustomChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPottyBreakCustom(event.target.value);
         petInfo.pottyBreakSchedule = pottyBreakCustom
     };
-
+    // SETS THE ENERGY LEVELS IN NUMBERS 1-LOW 2-MOD. 3-HIGH
     const handleEnergyLevelChange = (value: number) => {
         setEnergyLevel(value);
         petInfo.energyLevel = value;
     };
-
+    // SETS THE AMOUNT OF TIME ALONE BY VALUE AS NUMBER WHERE THE MAX NUMBER IS MAX NUMBER OF HOURS LEFT ALONE
     const handleAloneTimeChange = (value: number) => {
         setAloneTime(value);
         if (value === 0) {
@@ -248,12 +288,31 @@ const EditPetForm = () => {
             petInfo.aloneTime = '4-8 Hours';
         }
     };
-
+    // HANDLES RECEIVING THE AMOUNT OF TIME A PET CAN BE ALONE AND SETS THE CORRECT BUBBLE CHECKED
+    const handleReceiveAloneTimeChange = (value: string) => {
+        switch (true) {
+            case value.includes('< 1'):
+                setAloneTime(1);
+                break;
+            case value.includes('1-4'):
+                setAloneTime(4);
+                break;
+            case value.includes('4-8'):
+                setAloneTime(8);
+                break;
+            case value.includes('Custom'):
+                setAloneTime(0);
+                break;
+            default:
+                break;
+        }
+    }
+    // SETS THE CUSTOM ALONE TIME WHEN (ONCHANGE) => {} IN TEXT AREA
     const handleCustomAloneTimeChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setCustomAloneTime(event.target.value);
         petInfo.aloneTime = customAloneTime;
     };
-
+    // HANDLES THE FEEDING SCHEDULE BASED ON NUMBER VALUE WHERE 0-CUSTOM TEXT AREA 1-MORNING 2-TWICE A DAY
     const handleFeedingScheduleChange = (value: number) => {
         setFeedingSchedule(value);
         if (value === 0) {
@@ -267,12 +326,12 @@ const EditPetForm = () => {
             petInfo.feedingSchedule = 'Twice a day';
         }
     };
-
+    // HANDLES THE ONCHANGE EVENT FOR SETTING A CUSTOM FEEDING REQUEST FOR THE SITTER
     const handleCustomFeedingScheduleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setCustomFeedingSchedule(event.target.value);
         petInfo.feedingSchedule = customFeedingSchedule
     };
-
+    // CREATES AN ARRAY WITH THE MEDICATIONS SELECTED THEN JOINS ALL THE ELEMENTS TO CREATE ONE LONG STRING THAT LATER GETS CHECKED FOR KEYWORDS(PILL, TOPICAL, INJECTION)
     const checkForMedication = () => {
         const medicalTreatment = [];
         if (isMedPill) {
@@ -286,20 +345,52 @@ const EditPetForm = () => {
         }
         const medicationsAsString = medicalTreatment.join(', ');
         petInfo.medication = medicationsAsString;
-    }
 
+        setPetInfo(prevPetInfo => ({
+            ...prevPetInfo,
+            medication: medicationsAsString
+        }));
+    }
+    // CHECKS ONE LONG STRING FOR KEYWORDS TO SET TRUE FOR SAID KEYWORDS
+    const handleReceiveMedication = (value: string) => {
+        switch (true) {
+            case value.includes('Pill'):
+                setIsMedPill(true)
+            case value.includes('Topical'):
+                setIsMedTopical(true);
+            case value.includes('Injection'):
+                setIsMedInjection(true);
+            default:
+                break;
+        }
+    }
+    // HANDLES THE ONCHANGE EVENT FOR ADDING MORE INFO FOR THE SITTER
     const handleAdditionalInfo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         petInfo.additionalInfo = event.target.value;
     }
-
+    // RECEIVES THE ADDIOTNAL INFO TO SET AS DEFAULT VALUE FOR THE TEXT AREA
+    const handleReceiveAdditionalInfo = (value: string) => {
+        setPetInfo(prevPetInfo => ({
+            ...prevPetInfo,
+            additionalInfo: value
+        }));
+    }
+    // HANDLES THE ONCHANGE EVENT FOR HEALTH INFO TEXT AREA
     const handleHealthInfo = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         petInfo.healthInfo = event.target.value;
     }
-
+    // RECEIVES HEALTH INFO PROP FROM OBJECT TO SET AS DEFAULT VALUE
+    const handleReceiveHealthInfo = (value: string) => {
+        setPetInfo(prevPetInfo => ({
+            ...prevPetInfo,
+            healthInfo: value
+        }));
+    }
+    // RUNS FUNCTIONS FOR CHECKING SELECTED OPTIONS
     useEffect(() => {
         checkForMedication();
     }, [isMedPill, isMedTopical, isMedInjection]);
-
+    // ENSURES NONE OF THE FIELDS IN THE ARRAY ARE WITHOUT VALUES NEEDED FOR DB
     function findNullFields(data: any) {
         const notNullFieldsArray = [
             'name',
@@ -339,8 +430,8 @@ const EditPetForm = () => {
             // All required fields are filled
             // Proceed with form submission or other actions
             setLoading(true);
-            fetch("/api/addpet", {
-                method: "POST",
+            fetch(`/api/editpet/${petId}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -375,18 +466,22 @@ const EditPetForm = () => {
             }).then(async (res) => {
                 setLoading(false);
                 if (res.status === 200) {
-                    toast.success(`${petInfo.name} is Added! Redirecting to profile...`);
+                    dispatch(EditDogById(petInfo))
+                    toast.success(`${petInfo.name} info has been updated! Redirecting to profile...`);
                     setTimeout(() => {
                         router.push("/profile");
                     }, 1000);
                 } else {
                     const { error } = await res.json();
-                    toast.error(error);
+                    console.error("Fetch error:", error);
+                    setLoading(false);
+                    // Handle the error as needed
+                    toast.error("An error occurred while updating pet information.");
                 }
             });
         };
     };
-
+    // SAVES THE UPDATED FIELDS IN DB`
     const handleSavePetButton = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         findNullFields(petInfo);
@@ -394,7 +489,7 @@ const EditPetForm = () => {
 
     return (
         <div className="w-full md:w-4/5 lg:w-2/4 md:mx-auto bg-gray-50 px-4 py-8 sm:px-16 space-y-4 mt-3 md:mt-8 mb-8 rounded-2xl border border-gray-100 shadow-xl">
-            <h1 className="text-2xl text-blue-800 font-bold mb-4">Tell us about your pet</h1>
+            <h1 className="text-2xl text-blue-800 font-bold mb-4">Edit your pet info</h1>
 
             <form onSubmit={handleSavePetButton}>
                 {/* STARTS PET PHOTO */}
@@ -990,13 +1085,13 @@ const EditPetForm = () => {
                     {/* STARTS ADDITIONAL HEALTH INFO */}
                     <div>
                         <label htmlFor='additionalInfo' className="block text-xs text-gray-600 uppercase">Anything else a sitter should know?</label>
-                        <textarea onChange={handleAdditionalInfo} id="additionalInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
+                        <textarea defaultValue={petInfo.additionalInfo} onChange={handleAdditionalInfo} id="additionalInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
                     {/* ENDS ADDITIONAL HEALTH INFO */}
                     {/* STARTS HEALTH INFO TEXT AREA*/}
                     <div>
                         <label htmlFor='healthInfo' className="block text-xs text-gray-600 uppercase">Add details about your pet&apos;s health and care providers</label>
-                        <textarea onChange={handleHealthInfo} id="healthInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
+                        <textarea defaultValue={petInfo.healthInfo} onChange={handleHealthInfo} id="healthInfo" className="w-full mt-1 block rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"></textarea>
                     </div>
                     {/* ENDS HEALTH INFO TEXT AREA */}
                     <h2 className="text-xl text-blue-800 font-bold">Health Info</h2>
@@ -1049,7 +1144,7 @@ const EditPetForm = () => {
                     </div>
                 </div>
                 <button
-                    aria-label={'Save Pet'}
+                    aria-label={'Save Changes'}
                     disabled={loading}
                     className={`${loading
                         ? "cursor-not-allowed border-blue-200 bg-blue-600"
@@ -1059,7 +1154,7 @@ const EditPetForm = () => {
                     {loading ? (
                         <LoadingDots color="#FFFFFF" />
                     ) : (
-                        <p>{'Save Pet'}</p>
+                        <p>{'Save Changes'}</p>
                     )}
                 </button>
             </form>
