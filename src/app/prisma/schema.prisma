@@ -61,7 +61,7 @@ model Dog {
   additionalInfo     String?
   healthInfo         String?
   vetName            String?
-  vetPhone           Int?
+  vetPhone           String?
   vetAddress         String?
 }
 
