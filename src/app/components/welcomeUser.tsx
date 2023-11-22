@@ -43,7 +43,7 @@ export default function WelcomeUser() {
                         : <LoadingDots color="blue" />
                 }
             </h2>
-            <Link className="underline text-base md:text-lg lg:text-xl hover:text-blue-600 transition-all block py-2" href="/profile">
+            <Link className="underline text-base md:text-lg lg:text-xl hover:text-blue-600 transition-all block py-2" href="/editprofile">
                 Edit Profile
             </Link>
         </div>
