@@ -26,6 +26,21 @@ const dogListSlice: Slice<DogListState> = createSlice({
                 //console.log(`Dog with id ${newDog.id} already exists in the list.`);
             }
         },
+        EditDogById: (state, action: PayloadAction<DogState>) => {
+            const editedDog = action.payload;
+            // Find the index of the dog with the same ID in the dogList
+            const dogIndex = state.dogList.findIndex(dog => dog.id === editedDog.id);
+            if (dogIndex !== -1) {
+                // Dog with the same ID exists, update its properties
+                state.dogList[dogIndex] = {
+                    ...state.dogList[dogIndex],
+                    ...editedDog,
+                };
+            } else {
+                // Dog with the specified ID not found, handle it as needed
+                console.log(`Dog with id ${editedDog.id} not found.`);
+            }
+        },
         removeDogById: (state, action: PayloadAction<number>) => {
             const dogIdToRemove = action.payload;
             // Use filter to create a new array without the dog with the specified ID
@@ -34,5 +49,5 @@ const dogListSlice: Slice<DogListState> = createSlice({
     },
 });
 
-export const { addDogToList, removeDogById } = dogListSlice.actions;
+export const { addDogToList, removeDogById, EditDogById } = dogListSlice.actions;
 export default dogListSlice.reducer;
