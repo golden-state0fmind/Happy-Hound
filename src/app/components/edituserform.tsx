@@ -96,6 +96,15 @@ export const EditUserForm = () => {
     // TODO: BUILD DELETE ROUTE FOR DELETE BUTTON
     // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
 
+    const handleDeleteProfile = () => {
+        console.log('Delete Profile');
+        // fetch(`/api/editprofile/${user.id}`)
+        //     .then((res) => { 
+        //         console.log(res)
+        //     })
+        //     .catch((error) => { console.log(error) })
+    }
+
     return (
         <form
             onSubmit={(e) => {
@@ -116,7 +125,7 @@ export const EditUserForm = () => {
                 }
                 console.log(userProfile, "====")
                 setLoading(true);
-                fetch(`/api/edituser`, {
+                fetch(`/api/editprofile`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -412,6 +421,7 @@ export const EditUserForm = () => {
                 )}
             </button>
             <button
+                onClick={handleDeleteProfile}
                 aria-label={'Delete Profile'}
                 disabled={loading}
                 className={`${loading
