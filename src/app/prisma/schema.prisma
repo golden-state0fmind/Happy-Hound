@@ -82,7 +82,7 @@ model Profile {
   address       String?
   city          String?
   state         String?
-  postcode      Int?
+  postcode      String?
   country       String?
   photo         String?
   age           String?
