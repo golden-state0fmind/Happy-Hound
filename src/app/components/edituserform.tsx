@@ -64,7 +64,7 @@ export const EditUserForm = () => {
             const ageDifferenceInYears = timeDifference / (1000 * 60 * 60 * 24 * 365);
             // Round down the age difference to the nearest whole number
             const roundedAgeDifference = Math.floor(ageDifferenceInYears);
-            setUserAge(roundedAgeDifference);
+            setUserAge(roundedAgeDifference.toString());
         } else {
             console.error('Invalid date(s)');
         }
@@ -116,30 +116,37 @@ export const EditUserForm = () => {
                 }
                 console.log(userProfile, "====")
                 setLoading(true);
-                // fetch(`/api/edituser/${user.id}`, {
-                //     method: "PUT",
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify({
-                //         firstName: e.currentTarget.firstName.value,
-                //         lastName: e.currentTarget.lastName.value,
-                //         email: e.currentTarget.email.value,
-                //         password: e.currentTarget.password.value,
-                //         role: selectedRole
-                //     }),
-                // }).then(async (res) => {
-                //     setLoading(false);
-                //     if (res.status === 200) {
-                //         toast.success("Account updated! Redirecting to profile...");
-                //         setTimeout(() => {
-                //             router.push("/profile");
-                //         }, 2000);
-                //     } else {
-                //         const { error } = await res.json();
-                //         toast.error(error);
-                //     }
-                // });
+                fetch(`/api/edituser`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id: user.id,
+                        userId: user.id,
+                        address: e.currentTarget.address.value,
+                        city: e.currentTarget.city.value,
+                        state: e.currentTarget.state.value,
+                        postcode: e.currentTarget.postcode.value,
+                        country: "US",
+                        photo: "",
+                        age: userAge,
+                        phone: e.currentTarget.phone.value,
+                        eContactName: e.currentTarget.eContactName.value,
+                        eContactPhone: userInfo.eContactPhone,
+                    }),
+                }).then(async (res) => {
+                    setLoading(false);
+                    if (res.status === 200) {
+                        toast.success("Account updated! Redirecting to profile...");
+                        setTimeout(() => {
+                            router.push("/profile");
+                        }, 2000);
+                    } else {
+                        const { error } = await res.json();
+                        toast.error(error);
+                    }
+                });
             }}
             className="flex flex-col space-y-4 bg-gray-50 py-8">
             {/* STARTS USERNAME */}
