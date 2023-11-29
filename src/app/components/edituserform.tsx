@@ -92,6 +92,7 @@ export const EditUserForm = () => {
             setUserInfo({ ...userInfo, [id]: value });
         }
     };
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchProfile(`/api/getuserprofile/${user.id}`)
@@ -105,6 +106,7 @@ export const EditUserForm = () => {
                 const formattedDate4rmDb = `${parts4DbBd[2]}-${parts4DbBd[0].padStart(2, '0')}-${parts4DbBd[1].padStart(2, '0')}`;
                 const dBdValue = userInfo.age !== "" || userInfo.age !== null ? formattedDate4rmDb : formattedDate;
                 setCalDefaultValue(dBdValue)
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -138,27 +140,14 @@ export const EditUserForm = () => {
                     eContactName: e.currentTarget.eContactName.value,
                     eContactPhone: userInfo.eContactPhone,
                 }
-                console.log(userProfile, "====")
+                // console.log(userProfile, "====")
                 setLoading(true);
                 fetch(`/api/editprofile`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        id: user.id,
-                        userId: user.id,
-                        address: e.currentTarget.address.value,
-                        city: e.currentTarget.city.value,
-                        state: e.currentTarget.state.value,
-                        postcode: e.currentTarget.postcode.value,
-                        country: "US",
-                        photo: "",
-                        age: userAge,
-                        phone: e.currentTarget.phone.value,
-                        eContactName: e.currentTarget.eContactName.value,
-                        eContactPhone: userInfo.eContactPhone,
-                    }),
+                    body: JSON.stringify(userProfile),
                 }).then(async (res) => {
                     setLoading(false);
                     if (res.status === 200) {
@@ -181,32 +170,52 @@ export const EditUserForm = () => {
                 >
                     First Name
                 </label>
-                <input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    placeholder="John"
-                    autoComplete="firstName"
-                    defaultValue={user.firstName ? user.firstName : ''}
-                    required
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        )
+                        : (
+                            <input
+                                id="firstName"
+                                name="firstName"
+                                type="text"
+                                placeholder="John"
+                                autoComplete="firstName"
+                                defaultValue={user.firstName ? user.firstName : ''}
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
                 <label
                     htmlFor="lastName"
                     className="block text-xs text-gray-600 uppercase mt-4"
                 >
                     last Name
                 </label>
-                <input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    placeholder="Wick"
-                    autoComplete="lastName"
-                    defaultValue={user.lastName ? user.lastName : ''}
-                    required
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        )
+                        : (
+                            <input
+                                id="lastName"
+                                name="lastName"
+                                type="text"
+                                placeholder="Wick"
+                                autoComplete="lastName"
+                                defaultValue={user.lastName ? user.lastName : ''}
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
             </div>
             {/* END USERNAME */}
             {/* STARTS AGE */}
@@ -226,16 +235,25 @@ export const EditUserForm = () => {
                         }
                     </span>
                 </label>
-                <input
-                    aria-label="birthDate"
-                    id="birthDate"
-                    name="birthDate"
-                    type="date"
-                    required
-                    defaultValue={calDefaultValue}
-                    onChange={handleAgeChange}
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        ) : (
+                            <input
+                                aria-label="birthDate"
+                                id="birthDate"
+                                name="birthDate"
+                                type="date"
+                                required
+                                defaultValue={calDefaultValue}
+                                onChange={handleAgeChange}
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
             </div>
             {/* ENDS AGE */}
             <div className="grid grid-cols-2 gap-4">
@@ -247,17 +265,26 @@ export const EditUserForm = () => {
                     >
                         Street Address
                     </label>
-                    <input
-                        id="address"
-                        name="address"
-                        type="text"
-                        placeholder="25 Broadway"
-                        value={userInfo.address !== null ? userInfo.address : ""}
-                        autoComplete="address"
-                        onChange={handleUserInfoChange}
-                        required
-                        className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                    />
+                    {
+                        isLoading
+                            ? (
+                                <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                    <LoadingDots color="blue" />
+                                </div>
+                            ) : (
+                                <input
+                                    id="address"
+                                    name="address"
+                                    type="text"
+                                    placeholder="25 Broadway"
+                                    value={userInfo.address !== null ? userInfo.address : ""}
+                                    autoComplete="address"
+                                    onChange={handleUserInfoChange}
+                                    required
+                                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                                />
+                            )
+                    }
                 </div>
                 {/* ENDS ADDRESS */}
                 {/* STARTS CITY */}
@@ -268,17 +295,26 @@ export const EditUserForm = () => {
                     >
                         City
                     </label>
-                    <input
-                        id="city"
-                        name="city"
-                        type="text"
-                        placeholder="New York"
-                        autoComplete="city"
-                        value={userInfo.city !== null ? userInfo.city : ""}
-                        onChange={handleUserInfoChange}
-                        required
-                        className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                    />
+                    {
+                        isLoading
+                            ? (
+                                <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                    <LoadingDots color="blue" />
+                                </div>
+                            ) : (
+                                <input
+                                    id="city"
+                                    name="city"
+                                    type="text"
+                                    placeholder="New York"
+                                    autoComplete="city"
+                                    value={userInfo.city !== null ? userInfo.city : ""}
+                                    onChange={handleUserInfoChange}
+                                    required
+                                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                                />
+                            )
+                    }
                 </div>
                 {/* ENDS CITY */}
             </div>
@@ -291,17 +327,26 @@ export const EditUserForm = () => {
                     >
                         State
                     </label>
-                    <input
-                        id="state"
-                        name="state"
-                        type="text"
-                        placeholder="NY"
-                        autoComplete="state"
-                        value={userInfo.state !== null ? userInfo.state : ""}
-                        onChange={handleUserInfoChange}
-                        required
-                        className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                    />
+                    {
+                        isLoading
+                            ? (
+                                <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                    <LoadingDots color="blue" />
+                                </div>
+                            ) : (
+                                <input
+                                    id="state"
+                                    name="state"
+                                    type="text"
+                                    placeholder="NY"
+                                    autoComplete="state"
+                                    value={userInfo.state !== null ? userInfo.state : ""}
+                                    onChange={handleUserInfoChange}
+                                    required
+                                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                                />
+                            )
+                    }
                 </div>
                 {/* ENDS STATE */}
                 {/* STARTS POSTCODE */}
@@ -312,17 +357,26 @@ export const EditUserForm = () => {
                     >
                         Postcode
                     </label>
-                    <input
-                        id="postcode"
-                        name="postcode"
-                        type="text"
-                        placeholder="10004"
-                        autoComplete="postcode"
-                        value={userInfo.postcode !== null ? userInfo.postcode : ""}
-                        onChange={handleUserInfoChange}
-                        required
-                        className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                    />
+                    {
+                        isLoading
+                            ? (
+                                <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                    <LoadingDots color="blue" />
+                                </div>
+                            ) : (
+                                <input
+                                    id="postcode"
+                                    name="postcode"
+                                    type="text"
+                                    placeholder="10004"
+                                    autoComplete="postcode"
+                                    value={userInfo.postcode !== null ? userInfo.postcode : ""}
+                                    onChange={handleUserInfoChange}
+                                    required
+                                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                                />
+                            )
+                    }
                 </div>
                 {/* ENDS POSTCODE */}
             </div>
@@ -334,19 +388,28 @@ export const EditUserForm = () => {
                 >
                     Email Address
                 </label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="wroof@thedogpark.com"
-                    autoComplete="email"
-                    defaultValue={user.email ? user.email : ''}
-                    required
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        ) : (
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="wroof@thedogpark.com"
+                                autoComplete="email"
+                                defaultValue={user.email ? user.email : ''}
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
             </div>
             {/* END EMAIL ADDRESS */}
-            {/* START PASSWORD */}
+            {/* START PHONE */}
             <div>
                 <label
                     htmlFor="phone"
@@ -354,20 +417,29 @@ export const EditUserForm = () => {
                 >
                     Phone
                 </label>
-                <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    pattern="\d*"
-                    inputMode="numeric"
-                    maxLength={10}
-                    value={userInfo.phone !== null ? userInfo.phone : ""}
-                    onChange={handleUserInfoChange}
-                    required
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        ) : (
+                            <input
+                                id="phone"
+                                name="phone"
+                                type="tel"
+                                pattern="\d*"
+                                inputMode="numeric"
+                                maxLength={10}
+                                value={userInfo.phone !== null ? userInfo.phone : ""}
+                                onChange={handleUserInfoChange}
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
             </div>
-            {/* END PASSWORD */}
+            {/* END PHONE */}
             {/* START ROLE */}
             <div>
                 <label
@@ -376,17 +448,26 @@ export const EditUserForm = () => {
                 >
                     Role
                 </label>
-                <select
-                    id="role"
-                    name="role"
-                    required
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                    defaultValue={user.role ? user.role : selectedRole}
-                    onChange={handleRoleChange}
-                >
-                    <option defaultValue="DOG_OWNER">DOG OWNER</option>
-                    <option value="DOG_SITTER">DOG SITTER</option>
-                </select>
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        ) : (
+                            <select
+                                id="role"
+                                name="role"
+                                required
+                                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                                defaultValue={user.role ? user.role : selectedRole}
+                                onChange={handleRoleChange}
+                            >
+                                <option defaultValue="DOG_OWNER">DOG OWNER</option>
+                                <option value="DOG_SITTER">DOG SITTER</option>
+                            </select>
+                        )
+                }
             </div>
             {/* END ROLE */}
             {/* STARTS E-CONTACT-NAME */}
@@ -397,17 +478,26 @@ export const EditUserForm = () => {
                 >
                     Emergency Contact Name
                 </label>
-                <input
-                    id="eContactName"
-                    name="eContactName"
-                    type="text"
-                    placeholder="Winston"
-                    autoComplete="eContactName"
-                    value={userInfo.eContactName !== null ? userInfo.eContactName : ""}
-                    onChange={handleUserInfoChange}
-                    required
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        ) : (
+                            <input
+                                id="eContactName"
+                                name="eContactName"
+                                type="text"
+                                placeholder="Winston"
+                                autoComplete="eContactName"
+                                value={userInfo.eContactName !== null ? userInfo.eContactName : ""}
+                                onChange={handleUserInfoChange}
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
             </div>
             {/* ENDS E-CONTACT-NAME */}
             {/* STARTS E-CONTACT-PHONE */}
@@ -418,20 +508,29 @@ export const EditUserForm = () => {
                 >
                     Emergency Contact Phone
                 </label>
-                <input
-                    id="eContactPhone"
-                    name="eContactPhone"
-                    type="tel"
-                    pattern="\d*"
-                    inputMode="numeric"
-                    maxLength={10}
-                    placeholder="9093216543"
-                    autoComplete="eContactPhone"
-                    value={userInfo.eContactPhone !== null ? userInfo.eContactPhone : ""}
-                    onChange={handleUserInfoChange}
-                    required
-                    className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
-                />
+                {
+                    isLoading
+                        ? (
+                            <div className='animate-pulse bg-blue-300 mt-1 block w-full appearance-none rounded-md border border-blue-300 px-3 py-2 shadow-sm text-center'>
+                                <LoadingDots color="blue" />
+                            </div>
+                        ) : (
+                            <input
+                                id="eContactPhone"
+                                name="eContactPhone"
+                                type="tel"
+                                pattern="\d*"
+                                inputMode="numeric"
+                                maxLength={10}
+                                placeholder="9093216543"
+                                autoComplete="eContactPhone"
+                                value={userInfo.eContactPhone !== null ? userInfo.eContactPhone : ""}
+                                onChange={handleUserInfoChange}
+                                required
+                                className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
+                            />
+                        )
+                }
             </div>
             {/* ENDS E-CONTACT-PHONE */}
             <button
