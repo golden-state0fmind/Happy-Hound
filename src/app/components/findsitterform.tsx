@@ -54,6 +54,7 @@ const FindSitterForm = () => {
         }
     }
 
+    // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
     const handleZipCodeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         const formattedZip = formatZipCode(value)
