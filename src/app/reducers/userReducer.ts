@@ -28,6 +28,17 @@ export const fetchUser = async () => {
     }
 };
 
+export const fetchProfile = async (route: string) => {
+    try {
+        const response = await fetch(route);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+};
+
 const userSlice = createSlice({
     name: "currentUser",
     initialState,
