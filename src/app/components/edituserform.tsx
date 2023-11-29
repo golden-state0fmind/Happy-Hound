@@ -4,6 +4,7 @@ import { RootState } from "../reducers";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import LoadingDots from "../components/loading-dots";
+import { fetchProfile } from "../reducers/userReducer";
 
 export type UserProfileTypes = {
     id: number | null,
@@ -25,6 +26,7 @@ export const EditUserForm = () => {
     const [loading, setLoading] = useState(false);
     const user = useSelector((state: RootState) => state.user);
     const [selectedRole, setSelectedRole] = useState("DOG_OWNER");
+    const [calDefaultValue, setCalDefaultValue] = useState<string>("")
     const [userAge, setUserAge] = useState<number | null | string>(null);
     const [userInfo, setUserInfo] = useState<UserProfileTypes>({
         id: user.id,
@@ -91,14 +93,27 @@ export const EditUserForm = () => {
         }
     };
 
-    // TODO: SET DEFAULT VALUES FOR THE FIELDS FOR THE CURRENT USER
-    // TODO: BUILD PUT ROUTE FOR UPDATING USER
-    // TODO: BUILD DELETE ROUTE FOR DELETE BUTTON
-    // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
+    useEffect(() => {
+        fetchProfile(`/api/getuserprofile/${user.id}`)
+            .then((res) => {
+                // Stores user profile data in local state
+                const resData = res.data;
+                setUserInfo(resData);
+                // Formats the date saved in db
+                const providedDate4rmDb = `${month}/${day}/${year - Number(resData.age)}`;
+                const parts4DbBd = providedDate4rmDb.split('/');
+                const formattedDate4rmDb = `${parts4DbBd[2]}-${parts4DbBd[0].padStart(2, '0')}-${parts4DbBd[1].padStart(2, '0')}`;
+                const dBdValue = userInfo.age !== "" || userInfo.age !== null ? formattedDate4rmDb : formattedDate;
+                setCalDefaultValue(dBdValue)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, []);
 
     const handleDeleteProfile = () => {
-        console.log('Delete Profile');
-        // fetch(`/api/editprofile/${user.id}`)
+        console.log('Delete Profile', user.id);
+        // fetch(`/api/deleteprofile/${user.id}`)
         //     .then((res) => { 
         //         console.log(res)
         //     })
@@ -203,9 +218,11 @@ export const EditUserForm = () => {
                     AGE
                     <span className='sm:text-sm p-2'>
                         {
-                            userAge !== null
-                                ? userAge
-                                : <LoadingDots color="blue" />
+                            userInfo.age !== "" || userInfo.age !== null
+                                ? userInfo.age
+                                : userAge !== "" || userAge !== null
+                                    ? userAge
+                                    : <LoadingDots color="blue" />
                         }
                     </span>
                 </label>
@@ -215,7 +232,7 @@ export const EditUserForm = () => {
                     name="birthDate"
                     type="date"
                     required
-                    defaultValue={formattedDate}
+                    defaultValue={calDefaultValue}
                     onChange={handleAgeChange}
                     className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-green-800 shadow-sm sm:text-sm"
                 />
@@ -235,7 +252,9 @@ export const EditUserForm = () => {
                         name="address"
                         type="text"
                         placeholder="25 Broadway"
+                        value={userInfo.address !== null ? userInfo.address : ""}
                         autoComplete="address"
+                        onChange={handleUserInfoChange}
                         required
                         className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                     />
@@ -255,6 +274,8 @@ export const EditUserForm = () => {
                         type="text"
                         placeholder="New York"
                         autoComplete="city"
+                        value={userInfo.city !== null ? userInfo.city : ""}
+                        onChange={handleUserInfoChange}
                         required
                         className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                     />
@@ -276,6 +297,8 @@ export const EditUserForm = () => {
                         type="text"
                         placeholder="NY"
                         autoComplete="state"
+                        value={userInfo.state !== null ? userInfo.state : ""}
+                        onChange={handleUserInfoChange}
                         required
                         className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                     />
@@ -295,6 +318,8 @@ export const EditUserForm = () => {
                         type="text"
                         placeholder="10004"
                         autoComplete="postcode"
+                        value={userInfo.postcode !== null ? userInfo.postcode : ""}
+                        onChange={handleUserInfoChange}
                         required
                         className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                     />
@@ -336,7 +361,7 @@ export const EditUserForm = () => {
                     pattern="\d*"
                     inputMode="numeric"
                     maxLength={10}
-                    // value={}
+                    value={userInfo.phone !== null ? userInfo.phone : ""}
                     onChange={handleUserInfoChange}
                     required
                     className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
@@ -378,6 +403,8 @@ export const EditUserForm = () => {
                     type="text"
                     placeholder="Winston"
                     autoComplete="eContactName"
+                    value={userInfo.eContactName !== null ? userInfo.eContactName : ""}
+                    onChange={handleUserInfoChange}
                     required
                     className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
                 />
@@ -400,6 +427,7 @@ export const EditUserForm = () => {
                     maxLength={10}
                     placeholder="9093216543"
                     autoComplete="eContactPhone"
+                    value={userInfo.eContactPhone !== null ? userInfo.eContactPhone : ""}
                     onChange={handleUserInfoChange}
                     required
                     className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm sm:text-sm"
