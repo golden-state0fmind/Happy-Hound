@@ -20,11 +20,18 @@ export async function GET(req: Request) {
 
         if (currentUserId) {
 
-            const deleteProfile = await prisma.profile.delete({
-                where: {
-                    id: Number(profileId),
-                },
-            });
+            const deleteProfile = await Promise.all([
+                prisma.user.delete({
+                    where: {
+                        id: Number(profileId),
+                    },
+                }),
+                prisma.profile.delete({
+                    where: {
+                        id: Number(profileId),
+                    },
+                }),
+            ]);
 
             return NextResponse.json({ data: deleteProfile, status: 200 });
         } else {
