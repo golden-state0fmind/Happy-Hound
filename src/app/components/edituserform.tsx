@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { RootState } from "../reducers";
 import { useSelector } from "react-redux";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingDots from "../components/loading-dots";
 import { fetchProfile } from "../reducers/userReducer";
@@ -23,7 +24,8 @@ export type UserProfileTypes = {
 
 export const EditUserForm = () => {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false); // Handles loading for sending data
+    const [isLoading, setIsLoading] = useState(true); // Handles loading for receiving data
     const user = useSelector((state: RootState) => state.user);
     const [selectedRole, setSelectedRole] = useState("DOG_OWNER");
     const [calDefaultValue, setCalDefaultValue] = useState<string>("")
@@ -92,7 +94,6 @@ export const EditUserForm = () => {
             setUserInfo({ ...userInfo, [id]: value });
         }
     };
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchProfile(`/api/getuserprofile/${user.id}`)
@@ -113,14 +114,26 @@ export const EditUserForm = () => {
             })
     }, []);
 
-    const handleDeleteProfile = () => {
+    const handleDeleteProfile = async () => {
         console.log('Delete Profile', user.id);
-        // fetch(`/api/deleteprofile/${user.id}`)
-        //     .then((res) => { 
-        //         console.log(res)
-        //     })
-        //     .catch((error) => { console.log(error) })
+        try {
+            await fetch(`/api/deleteprofile/${user.id}`);
+            toast.success(`${user.firstName}, your profile is now being deleted...`);
+
+            // Add a delay; Display the success message before redirecting
+            await new Promise(() => setTimeout(() => {
+                sessionStorage.clear();
+                signOut();
+                router.push("/");
+            }, 2000));
+        } catch (error) {
+            toast.error(`Error deleting profile: ${error}`);
+            await new Promise(() => setTimeout(() => {
+                router.push("/profile");
+            }, 2000));
+        }
     }
+    // TODO: Handle age and date to prevent null values & need to save the month and day
 
     return (
         <form
@@ -227,11 +240,7 @@ export const EditUserForm = () => {
                     AGE
                     <span className='sm:text-sm p-2'>
                         {
-                            userInfo.age !== "" || userInfo.age !== null
-                                ? userInfo.age
-                                : userAge !== "" || userAge !== null
-                                    ? userAge
-                                    : <LoadingDots color="blue" />
+                            (userInfo && userInfo.age) ?? userAge ?? <LoadingDots color="blue" />
                         }
                     </span>
                 </label>
