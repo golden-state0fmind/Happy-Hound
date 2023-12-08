@@ -31,6 +31,7 @@ model User {
   dogs      Dog[]
   profile   Profile?
   payments  Payment[]
+  sitterSettings SitterSettings?
 }
 
 model Dog {
@@ -89,6 +90,25 @@ model Profile {
   phone         String?
   eContactName  String?
   eContactPhone String?
+}
+
+model SitterSettings {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  user        User     @relation(fields: [userId], references: [id])
+  index       Int
+  selectedId  Int
+  name        String
+  city        String
+  state       String
+  rating      Float
+  zipCode     Int
+  services    String[]
+  randomNum   Int
+  chargeRate  Int
+  description String
+  profileImage String
+  checked    Boolean
 }
 
 model Payment {
