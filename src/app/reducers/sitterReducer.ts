@@ -28,13 +28,26 @@ const initialState: DataProps = {
     profileImage: '',
 };
 
+// Async thunk for fetching data
+export const fetchDistanceSitterToOwner = async (zipCode: string | number, openCageKey: string) => {
+    const openCageURL = `https://api.opencagedata.com/geocode/v1/json?q=${zipCode}&key=${openCageKey}&language=en&pretty=1`;
+    try {
+        const response = await fetch(openCageURL);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error; // Rethrow the error so that it can be handled elsewhere
+    }
+};
+
 const dogsitterSlice = createSlice({
     name: 'dogsitter',
     initialState,
     reducers: {
         selectDogSitter: (state, action) => {
             const id = action.payload;
-            state.selectedId = id; 
+            state.selectedId = id;
         },
     },
 });
