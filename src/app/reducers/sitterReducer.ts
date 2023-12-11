@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export type DataProps = {
+    index: number
     id: number
     selectedId: number,
     name: string,
@@ -9,23 +10,30 @@ export type DataProps = {
     state: string,
     zipCode: number | string,
     rating: number,
+    randomNum: number,
     chargeRate: number | string,
     services: string[],
     profileImage: string,
+    checked: boolean
+    handleSelectDogSitter: () => void
 }
 
 const initialState: DataProps = {
-    id: 0,
-    selectedId: 0,
-    name: '',
-    description: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    rating: 0,
-    chargeRate: 0,
-    services: [],
-    profileImage: '',
+    index: 0,
+    id: 1,
+    selectedId: 1,
+    name: 'Mike M.',
+    city: 'Glendale',
+    state: 'AZ',
+    rating: 4.9,
+    zipCode: 85306,
+    services: ['Drop-In Visits', 'House Sitting'],
+    randomNum: 0,
+    chargeRate: 35,
+    description: 'Experienced in dog walking and pet sitting.',
+    profileImage: 'sitter1.jpg',
+    checked: false,
+    handleSelectDogSitter: function () { },
 };
 
 // Async thunk for fetching data
