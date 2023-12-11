@@ -18,10 +18,10 @@ export const DogSitterList = () => {
     const [randomNum, setRandomNum] = useState(2)
     const serviceState = useSelector((state: RootState) => state.service);
     const dogsitterState = useSelector((state: RootState) => state.dogsitter);
+    const dogsitterListState = useSelector((state: RootState) => state.dogSitterList);
     const { selectedId } = dogsitterState;
     const [sortedSitters, setSortedSitters] = useState<SitterCardProps[]>([]);
 
-    // checked, randomNum, index, and handleSelectDogSitter
     const data = [
         {
             index: 0,
