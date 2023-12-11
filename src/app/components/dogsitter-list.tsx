@@ -19,7 +19,7 @@ export const DogSitterList = () => {
     const serviceState = useSelector((state: RootState) => state.service);
     const dogsitterState = useSelector((state: RootState) => state.dogsitter);
     const { selectedId } = dogsitterState;
-    const [sortedSitters, setSortedSitters] = useState <SitterCardProps[]>([]);
+    const [sortedSitters, setSortedSitters] = useState<SitterCardProps[]>([]);
 
     // checked, randomNum, index, and handleSelectDogSitter
     const data = [
@@ -38,7 +38,7 @@ export const DogSitterList = () => {
             description: 'Experienced in dog walking and pet sitting.',
             profileImage: 'sitter1.jpg',
             checked: false,
-            handleSelectDogSitter: function(){},
+            handleSelectDogSitter: function () { },
         },
         {
             index: 0,
@@ -55,7 +55,7 @@ export const DogSitterList = () => {
             description: 'Loves spending time with dogs and providing quality care.',
             profileImage: 'sitter2.jpg',
             checked: false,
-            handleSelectDogSitter: function(){ },
+            handleSelectDogSitter: function () { },
         },
         {
             index: 0,
@@ -72,7 +72,7 @@ export const DogSitterList = () => {
             description: 'Loves dogs.',
             profileImage: 'sitter3.jpg',
             checked: false,
-            handleSelectDogSitter: function(){ },
+            handleSelectDogSitter: function () { },
         },
     ];
 
@@ -102,14 +102,14 @@ export const DogSitterList = () => {
             }
         }
     }, [serviceState]);
-    
+
     const generateRandomNumberInRange = (min: number, max: number) => {
         const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
         setRandomNum(ranNum);
     }
-    
+
     useEffect(() => { generateRandomNumberInRange(1, 100) }, []);
-    
+
     const handleSelectDogSitter = (id: number) => {
         dispatch(selectDogSitter(id));
     };

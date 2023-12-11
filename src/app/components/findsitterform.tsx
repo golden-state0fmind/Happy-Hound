@@ -3,12 +3,16 @@ import { RootState } from '../reducers';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import LoadingDots from './loading-dots';
+import { useDistanceCalculator, Coordinates } from '../hooks/useDistanceCalculator';
+import { fetchDistanceSitterToOwner } from '../reducers/sitterReducer';
 
 const FindSitterForm = () => {
     const [zipCode, setZipCode] = useState<number | string>('');
     const [loading, setLoading] = useState(false);
     const [numberOfDogs, setNumberOfDogs] = useState<number | string>(1);
     const serviceState = useSelector((state: RootState) => state.service);
+    const dogSitterLocation = { lat: 33.6241409, lng: -112.1766738 };
+    const [dogOwnerLocation, setDogOwnerLocation] = useState<Coordinates>({ "lat": 33.4441786, "lng": -111.92882 });
     const { dropInVisits, dogWalking, houseSitting } = serviceState;
 
     // Adding all selected services into an array then placing the elements as values into the input field as read only
@@ -54,7 +58,6 @@ const FindSitterForm = () => {
         }
     }
 
-    // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
     const handleZipCodeInput = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         const formattedZip = formatZipCode(value)
@@ -75,9 +78,20 @@ const FindSitterForm = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         setLoading(true);
         isValidZipCode(zipCode);
+        fetchDistanceSitterToOwner(zipCode, '')
+            .then((res) => {
+                // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
+                // {"lat": 33.4441786, "lng": -111.92882}
+                setDogOwnerLocation(res.results[0].geometry)
+            })
+            .catch((err) => { console.log(err) })
+
     };
+    const distance = useDistanceCalculator(dogSitterLocation, dogOwnerLocation);
+    console.log(distance?.toFixed(0), 'mi');
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col bg-gray-100 rounded-lg shadow-md mt-6 space-y-4 px-4 py-8 sm:px-16">
