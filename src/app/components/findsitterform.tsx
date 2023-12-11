@@ -78,10 +78,10 @@ const FindSitterForm = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        const openCageKey = '';
         setLoading(true);
         isValidZipCode(zipCode);
-        fetchDistanceSitterToOwner(zipCode, '')
+        fetchDistanceSitterToOwner(zipCode, openCageKey)
             .then((res) => {
                 // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
                 // {"lat": 33.4441786, "lng": -111.92882}
