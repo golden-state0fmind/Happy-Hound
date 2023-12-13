@@ -116,7 +116,6 @@ const FindSitterForm = () => {
             </div>
             <div>
                 <label htmlFor="service" className="block text-xs text-gray-600 uppercase">
-                    What service?
                     <Link className="ps-2 text-blue-800" href={'/'}>select more services</Link>
                 </label>
                 <input
@@ -151,7 +150,6 @@ const FindSitterForm = () => {
 
             <div>
                 <label htmlFor="startDate" className="block text-xs text-gray-600 uppercase">
-                    For what days?
                     <span className="ps-2 text-xs text-blue-700">Add dates to see available sitters</span>
                 </label>
                 <div className="mt-1 grid grid-cols-2 gap-2">
