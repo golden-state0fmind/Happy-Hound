@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import { NavBar } from "./components/NavBar";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,6 +39,7 @@ export default async function RootLayout({
         <Suspense fallback="Fetching 🐶...">
         </Suspense>
         <NavBar />
+        <SpeedInsights />
         {children}
       </body>
     </html>
