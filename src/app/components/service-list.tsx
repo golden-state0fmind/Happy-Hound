@@ -2,10 +2,12 @@
 import { ServicesState, toggleService } from '../reducers/serviceReducer'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../reducers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingDots from './loading-dots';
 import { useRouter } from "next/navigation";
 import toast from 'react-hot-toast';
+import { fetchDogSitterList, setDogSitterList } from '../reducers/dogSitterListReducer';
+import { DataProps } from '../reducers/sitterReducer';
 
 
 const ServicesList = () => {
@@ -32,10 +34,14 @@ const ServicesList = () => {
         if (dropInVisits || dogWalking || houseSitting) {
             e.preventDefault();
             setLoading(true);
-            // Your API request using fetch or any HTTP request library
-            fetch('/api/dogsitter')
+            // Fetching dog sitters list to store in redux then push to next page
+            fetchDogSitterList()
                 .then((res) => {
                     if (res.status === 200) {
+                        const dogSittersArray = res.data;
+                        dogSittersArray.forEach((dogSitter: DataProps) => {
+                            dispatch(setDogSitterList(dogSitter));
+                        });
                         router.refresh();
                         router.push("/dogsitter");
                     } else {
