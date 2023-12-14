@@ -18,63 +18,9 @@ export const DogSitterList = () => {
     const [randomNum, setRandomNum] = useState(2)
     const serviceState = useSelector((state: RootState) => state.service);
     const dogsitterState = useSelector((state: RootState) => state.dogsitter);
-    const dogsitterListState = useSelector((state: RootState) => state.dogSitterList);
+    const dogsitterListState = useSelector((state: RootState) => state.dogSitterList.dogSitterList);
     const { selectedId } = dogsitterState;
     const [sortedSitters, setSortedSitters] = useState<SitterCardProps[]>([]);
-
-    const data = [
-        {
-            index: 0,
-            id: 1,
-            selectedId: 1,
-            name: 'Mike M.',
-            city: 'Glendale',
-            state: 'AZ',
-            rating: 4.9,
-            zipCode: 85306,
-            services: ['Drop-In Visits', 'House Sitting'],
-            randomNum: 0,
-            chargeRate: 35,
-            description: 'Experienced in dog walking and pet sitting.',
-            profileImage: 'sitter1.jpg',
-            checked: false,
-            handleSelectDogSitter: function () { },
-        },
-        {
-            index: 0,
-            id: 2,
-            selectedId: 2,
-            name: 'Jerry R.',
-            city: 'Glendale',
-            state: 'AZ',
-            rating: 4.7,
-            services: ['Dog Walking', 'House Sitting'],
-            zipCode: 85306,
-            randomNum: 0,
-            chargeRate: 27,
-            description: 'Loves spending time with dogs and providing quality care.',
-            profileImage: 'sitter2.jpg',
-            checked: false,
-            handleSelectDogSitter: function () { },
-        },
-        {
-            index: 0,
-            id: 3,
-            selectedId: 3,
-            name: 'Sara S.',
-            city: 'Glendale',
-            state: 'AZ',
-            rating: 4.8,
-            zipCode: 85306,
-            services: ['Dog Walking', 'House Sitting'],
-            randomNum: 0,
-            chargeRate: 30,
-            description: 'Loves dogs.',
-            profileImage: 'sitter3.jpg',
-            checked: false,
-            handleSelectDogSitter: function () { },
-        },
-    ];
 
     useEffect(() => {
         const { dropInVisits, dogWalking, houseSitting } = serviceState;
@@ -92,12 +38,12 @@ export const DogSitterList = () => {
         }
 
         if (selectedServices.length > 0) {
-            const sittersOfferingServices = data.filter(sitter => {
+            const sittersOfferingServices = dogsitterListState.filter((sitter: { services: string | string[]; }) => {
                 return selectedServices.some(service => sitter.services.includes(service));
             });
 
             if (sittersOfferingServices.length > 0) {
-                const sortedSitters = sittersOfferingServices.sort((a, b) => b.rating - a.rating);
+                const sortedSitters = sittersOfferingServices.sort((a: { rating: number; }, b: { rating: number; }) => b.rating - a.rating);
                 setSortedSitters(sortedSitters);
             }
         }
@@ -128,6 +74,7 @@ export const DogSitterList = () => {
                             state={sitter.state}
                             rating={sitter.rating}
                             zipCode={sitter.zipCode}
+                            milesFrom={null}
                             services={sitter.services}
                             randomNum={randomNum + index}
                             chargeRate={sitter.chargeRate}
