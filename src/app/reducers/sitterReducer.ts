@@ -9,6 +9,7 @@ export type DataProps = {
     city: string,
     state: string,
     zipCode: number | string,
+    milesFrom: number | null,
     rating: number,
     randomNum: number,
     chargeRate: number | string,
@@ -27,6 +28,7 @@ const initialState: DataProps = {
     state: 'AZ',
     rating: 4.9,
     zipCode: 85306,
+    milesFrom: null,
     services: ['Drop-In Visits', 'House Sitting'],
     randomNum: 0,
     chargeRate: 35,
@@ -37,7 +39,7 @@ const initialState: DataProps = {
 };
 
 // Async thunk for fetching data
-export const fetchDistanceSitterToOwner = async (zipCode: string | number, openCageKey: string) => {
+export const fetchCoordinates = async (zipCode: string | number, openCageKey: string) => {
     const openCageURL = `https://api.opencagedata.com/geocode/v1/json?q=${zipCode}&key=${openCageKey}&language=en&pretty=1`;
     try {
         const response = await fetch(openCageURL);
