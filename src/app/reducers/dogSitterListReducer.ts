@@ -12,11 +12,11 @@ export const fetchDogSitterList = async () => {
     }
 };
 
-interface DogSiiterListState {
+type DogSitterListState = {
     dogSitterList: DataProps[];
 }
 
-const initialState: DogSiiterListState = {
+const initialState: DogSitterListState = {
     dogSitterList: [],
 };
 
@@ -25,8 +25,15 @@ const dogSitterSlice = createSlice({
     initialState,
     reducers: {
         setDogSitterList: (state, action: PayloadAction<DataProps>) => {
-            const dogSitterFromAPI = action.payload
-            state.dogSitterList.push(dogSitterFromAPI);
+            const addSitter = action.payload;
+            // Prevents duplicates in array if the user revisits the home page
+            const existingDogSitterIndex = state.dogSitterList.findIndex(sitter => sitter.id === addSitter.id);
+            if (existingDogSitterIndex === -1) {
+                // Dog Sitter with the same id doesn't exist, add it to the list
+                state.dogSitterList.push(addSitter);
+            } else {
+                return
+            }
         },
     },
 });
