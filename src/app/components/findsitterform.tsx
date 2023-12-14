@@ -1,17 +1,18 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { RootState } from '../reducers';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import LoadingDots from './loading-dots';
-import { useDistanceCalculator, Coordinates } from '../hooks/useDistanceCalculator';
-import { fetchDistanceSitterToOwner } from '../reducers/sitterReducer';
+import { calculateDistance, Coordinates } from '../utilities/calculateDistance';
+import { DataProps, fetchCoordinates } from '../reducers/sitterReducer';
+import { fetchDogSitterList } from '../reducers/dogSitterListReducer';
 
 const FindSitterForm = () => {
     const [zipCode, setZipCode] = useState<number | string>('');
     const [loading, setLoading] = useState(false);
     const [numberOfDogs, setNumberOfDogs] = useState<number | string>(1);
     const serviceState = useSelector((state: RootState) => state.service);
-    const dogSitterLocation = { lat: 33.6241409, lng: -112.1766738 };
+    const dogSitterLocation = { lat: 33.6241409, lng: -112.1766738 }; // TODO: need to iterate over a list of sitters and sort them from closest to furthest to the dog owner
     const [dogOwnerLocation, setDogOwnerLocation] = useState<Coordinates>({ "lat": 33.4441786, "lng": -111.92882 });
     const { dropInVisits, dogWalking, houseSitting } = serviceState;
 
@@ -81,17 +82,28 @@ const FindSitterForm = () => {
         const openCageKey = '';
         setLoading(true);
         isValidZipCode(zipCode);
-        fetchDistanceSitterToOwner(zipCode, openCageKey)
+        fetchCoordinates(zipCode, openCageKey)
             .then((res) => {
                 // TODO: SET UP DISTANCE MATRIX FOR SITTERS AND OWNERS
                 // {"lat": 33.4441786, "lng": -111.92882}
                 setDogOwnerLocation(res.results[0].geometry)
             })
             .catch((err) => { console.log(err) })
-
     };
-    const distance = useDistanceCalculator(dogSitterLocation, dogOwnerLocation);
-    console.log(distance?.toFixed(0), 'mi');
+
+    useEffect(() => {
+        fetchDogSitterList()
+            .then((res: any) => {
+                const distance = calculateDistance(dogSitterLocation, dogOwnerLocation);
+
+                res.data.forEach((dogSitter: DataProps) => {
+                    const sitterLocation = dogSitter.zipCode
+                    // dogSitter.milesFrom = calculateDistance(sitterLocation, dogOwnerLocation)
+                });
+
+            })
+            .catch((err: MessageEvent) => { console.log(err) })
+    }, [])
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col bg-gray-100 rounded-lg shadow-md mt-6 space-y-4 px-4 py-8 sm:px-16">
