@@ -138,7 +138,7 @@ const DogSitterCard = ({
                     <span className='text-green-800' >
                         ${chargeRate}
                     </span>
-                    per
+                    per service
                 </p>
             </div>
         </div>
